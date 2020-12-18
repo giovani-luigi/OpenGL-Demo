@@ -69,7 +69,7 @@ public:
 private:
 	
 	FileSceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, Shader shader)
-		: SceneObject(vertices, normals, shader)
+		: SceneObject(vertices, normals, shader, STATIC)
 	{		
 	}	
 };

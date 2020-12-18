@@ -6,12 +6,19 @@
 #include "Shader.h"
 
 class SceneObject {
-
+		
 public:
 
-	SceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, Shader shader);
+	enum SceneObjectType : GLuint
+	{
+		STATIC = GL_STATIC_DRAW,
+		DYNAMIC = GL_DYNAMIC_DRAW
+	};
 
-	void draw(const Camera& camera, const glm::mat4& projection) const;
+	SceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, Shader shader, SceneObjectType type);
+	virtual ~SceneObject() = default;
+
+	virtual void draw(const Camera& camera, const glm::mat4& projection);
 
 	// gets the transformation to be used by the shader
 	Transform3D& get_transformation() { return m_transformation; }	
@@ -20,14 +27,14 @@ public:
 
 	void set_custom_shader(Shader shader) { m_shader = shader; }
 	
-private:
+protected:
 
 	GLuint m_vao;
 
 	Transform3D m_transformation;
 	Shader m_shader;
 
-	const std::vector<float> m_vertices;
-	const std::vector<float> m_normals;
+	std::vector<float> m_vertices;
+	std::vector<float> m_normals;
 };
 

@@ -1,33 +1,33 @@
 #include "Scene.h"
 
 
-Scene::Scene(GLFWwindow * window) :
-	m_window(window), m_lastFrameTime(0), m_frame(0),
-	m_mouse_first(true), m_camera(*this), m_projection()
+Scene::Scene(GLFWwindow* window) :
+    m_window(window), m_lastFrameTime(0), m_frame(0),
+    m_mouse_first(true), m_camera(*this), m_projection()
 {
 }
 
 Scene::~Scene()
 {
-	for (const auto& object : m_objects)
-	{
+    for (const auto& object : m_objects)
+    {
         // delete them?
-	}
+    }
 }
 
 void Scene::run()
 {
     // setup the scene
-	setup(); 
-	
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(m_window)) {
+    setup();
 
+    /* Loop until the user closes the window */
+    while (!glfwWindowShouldClose(m_window))
+    {
         draw();
-    	
+
         /* Swap front and back buffers */
         glfwSwapBuffers(m_window);
-            	
+
         /* Poll for and process events */
         glfwPollEvents();
     }
@@ -36,21 +36,21 @@ void Scene::run()
 
 void Scene::process_key(int keyCode, int scanCode, int action, int modifiers)
 {
-	if (action == GLFW_REPEAT || action == GLFW_PRESS)
-	{
+    if (action == GLFW_REPEAT || action == GLFW_PRESS)
+    {
         //auto cam_pos = m_uniforms.camera.get_position();
-        		
-		const float step = m_deltaTime * m_keyboard_speed;
-		if (keyCode == GLFW_KEY_UP)
-		{
+
+        const float step = m_deltaTime * m_keyboard_speed;
+        if (keyCode == GLFW_KEY_UP)
+        {
             //if (!m_uniforms.collides(m_objects))
-				m_camera.walk(Camera::FORWARD, step);
-		}
-		else if (keyCode == GLFW_KEY_DOWN)
-		{
+            m_camera.walk(Camera::FORWARD, step);
+        }
+        else if (keyCode == GLFW_KEY_DOWN)
+        {
             m_camera.walk(Camera::BACKWARD, step);
-		}
-		else if (keyCode == GLFW_KEY_LEFT)
+        }
+        else if (keyCode == GLFW_KEY_LEFT)
         {
             m_camera.walk(Camera::LEFT, step);
         }
@@ -58,28 +58,27 @@ void Scene::process_key(int keyCode, int scanCode, int action, int modifiers)
         {
             m_camera.walk(Camera::RIGHT, step);
         }
-        else if (keyCode == GLFW_KEY_PAGE_UP) 
+        else if (keyCode == GLFW_KEY_PAGE_UP)
         {
             m_camera.move(Camera::UP, step);
         }
-        else if (keyCode == GLFW_KEY_PAGE_DOWN) 
+        else if (keyCode == GLFW_KEY_PAGE_DOWN)
         {
             m_camera.move(Camera::DOWN, step);
         }
-        else if (keyCode == GLFW_KEY_KP_ADD) 
+        else if (keyCode == GLFW_KEY_KP_ADD)
         {
             m_camera.zoom(0.25);
         }
-        else if (keyCode == GLFW_KEY_KP_SUBTRACT) 
+        else if (keyCode == GLFW_KEY_KP_SUBTRACT)
         {
             m_camera.zoom(-0.25);
         }
-        else if (keyCode == GLFW_KEY_S) 
+        else if (keyCode == GLFW_KEY_S)
         {
-         
         }
         Debug::print_debug(m_camera, m_projection);
-	}
+    }
 }
 
 void Scene::process_cursor(float xpos, float ypos)
@@ -88,7 +87,7 @@ void Scene::process_cursor(float xpos, float ypos)
     {
         m_mouse_x = xpos;
         m_mouse_y = ypos;
-    	m_mouse_first = false;
+        m_mouse_first = false;
     }
 
     auto deltaX = xpos - m_mouse_x;
@@ -99,12 +98,11 @@ void Scene::process_cursor(float xpos, float ypos)
 
     m_camera.yaw(deltaX * m_mouse_sensitivity);
     m_camera.pitch(deltaY * m_mouse_sensitivity * -1);
-	
 }
 
 void Scene::process_viewport_resize(int width, int height)
 {
-	// update projection's aspect ratio
+    // update projection's aspect ratio
     setup_projection();
 }
 
@@ -118,15 +116,6 @@ Shader Scene::create_light_shader()
     return Shader("default.vertex.shader", "light.fragment.shader");
 }
 
-void Scene::update_shaders()
-{
-	// pass the uniform values to the shaders of all objects
-    for (auto obj : m_objects)
-    {
-	    
-    }
-}
-
 void Scene::setup_projection()
 {
     int width, height;
@@ -136,56 +125,51 @@ void Scene::setup_projection()
 
 void Scene::setup()
 {
- 
-	// 1. enable depth test
-	glEnable(GL_DEPTH_TEST);
+    // 1. enable depth test
+    glEnable(GL_DEPTH_TEST);
 
     // 2. disable cursor mode, so camera interaction works better
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     // 3. initialize shader parameters, such as camera and projections    
     setup_projection();
     m_camera.set_position(glm::vec3(0., 0.5, 1.0));
-	
-	// 4. create shaders to be used for the objects in the scene
+
+    // 4. create shaders to be used for the objects in the scene
     auto global_shader = create_global_shader();
     auto light_shader = create_light_shader();
 
-	// 5. load and add objects
+    // 5. load and add objects
 
     // add ground
-		
+
     // add walls by distorting the cube
-	auto cube = CubeSceneObject(light_shader);
+    auto cube = CubeSceneObject(light_shader);
     cube.get_transformation().translate(-0.5, 0, 0);
     cube.get_transformation().scale(0.5, 0.5, 0.5);
-	m_objects.push_back(cube);
+    m_objects.push_back(cube);
 
     // load statue from Wavefront file
-	
-	SceneObject statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader);
+
+    SceneObject statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader);
     statue.get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
-	m_objects.push_back(statue);
-	
+    m_objects.push_back(statue);
 }
 
 void Scene::draw()
 {
     m_frame++;
 
-	double currentTime = glfwGetTime();
-	m_deltaTime = currentTime - m_lastFrameTime;
+    double currentTime = glfwGetTime();
+    m_deltaTime = currentTime - m_lastFrameTime;
     m_lastFrameTime = currentTime;
-	
+
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    		
+
     // render all scene objects
     for (auto& obj : m_objects)
-    {    	
-    	obj.draw(m_camera, m_projection);
+    {
+        obj.draw(m_camera, m_projection);
     }
-	
 }
-
-

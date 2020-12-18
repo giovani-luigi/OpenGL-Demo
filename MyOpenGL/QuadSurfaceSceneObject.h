@@ -5,12 +5,10 @@ class QuadSurfaceSceneObject : public SceneObject {
 		
 public:
 
-	explicit QuadSurfaceSceneObject(const std::vector<glm::vec3>& corners) :
-		SceneObject(generate_vertices(corners), generate_normals(corners))
+	explicit QuadSurfaceSceneObject(const std::vector<glm::vec3>& corners, Shader shader, SceneObjectType type) :
+		SceneObject(generate_vertices(corners), generate_normals(corners), shader, type)
 	{		
 	}
-
-private:
 
 	static std::vector<float> generate_vertices(const std::vector<glm::vec3>& corners)
 	{

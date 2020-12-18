@@ -1,13 +1,11 @@
 #pragma once
-struct ColorRGB {
+struct ColorRGB
+{
+    float r;
+    float g;
+    float b;
 
-	float r;
-	float g;
-	float b;
-
-	ColorRGB(float r, float g, float b) : r(r), g(g), b(b)
-	{		
-	}
-	
+    ColorRGB(float r, float g, float b) : r(r), g(g), b(b)
+    {
+    }
 };
-
