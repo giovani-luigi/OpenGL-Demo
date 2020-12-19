@@ -4,6 +4,7 @@
 #include "Transform3D.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "Material.h"
 
 class SceneObject
 {
@@ -15,8 +16,7 @@ public:
         DYNAMIC = GL_DYNAMIC_DRAW
     };
 
-    SceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, Shader shader,
-                SceneObjectType type);
+    SceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, SceneObjectType type, Shader shader, Material material);
     virtual ~SceneObject() = default;
 
     virtual void draw(const Camera& camera, const glm::mat4& projection);
@@ -24,10 +24,8 @@ public:
     // gets the transformation to be used by the shader
     Transform3D& get_transformation() { return m_transformation; }
 
-    Shader get_custom_shader() const { return m_shader; }
     GLuint get_vertex_buffer_id() const { return m_vbo; }
 
-    void set_custom_shader(Shader shader) { m_shader = shader; }
 
 protected:
 
@@ -36,6 +34,7 @@ protected:
     GLuint m_nvbo{};  // buffer for vertex normal
 
     Transform3D m_transformation;
+    Material m_material;
     Shader m_shader;
 
     std::vector<float> m_vertices;

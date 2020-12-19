@@ -93,7 +93,7 @@ public:
             0.0, 1.0, 0.0, //apontado para cima e para frente
             0.0, 1.0, 0.0, //apontado para cima e para frente
 
-        }, shader, STATIC)
+        }, STATIC, shader, Material::create_white_marble())
     {
         // nothing
     }

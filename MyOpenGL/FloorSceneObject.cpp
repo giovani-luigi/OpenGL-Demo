@@ -14,7 +14,9 @@ FloorSceneObject::FloorSceneObject(Shader shader) :
             glm::vec3(+1, 0, -1),
             glm::vec3(-1, 0, -1),
         }),
-        shader, DYNAMIC)
+        DYNAMIC, 
+        shader, 
+        Material::create_brown_floor())
 {
 }
 

@@ -8,40 +8,47 @@ struct Material {
 };
 
 struct PointLight {
-    vec3 position;
+    vec3 position;      // position must be in view space
     vec3 ambient; 
     vec3 diffuse;
     vec3 specular;
 };
 
+struct SpotLight {
+    vec3 position;      // position must be in view space
+    vec3 direction;
+    float aperture;
+};
+
 in vec3 v_pos;                    // vertex position in view space
 in vec3 v_norm;                   // vertex normal in view space
-in vec3 l_pos;                    // light position in view space (calculate at vertex shader for performance)
 
-uniform mat4 u_view;            // view matrix (camera)
-uniform Material u_material;    // material reflection parameters
-uniform PointLight u_light;     // point light emission parameters
+uniform mat4 u_view;              // view matrix (camera)
+uniform Material u_material;      // material reflection parameters
+uniform PointLight u_light;       // point light emission parameters
+uniform SpotLight u_flashlight;   // spot light emission parameters
 
 out vec4 frag_color;
 
 // calculates the color when using a point light.
-vec3 point_light(PointLight light, Material material) {
-    
+vec3 point_light(PointLight light, Material material) 
+{
+
     // 1. ambient component
     //      simulates a light far far away, that is coming from all angles
-    vec3 ambient_component = u_light.ambient * u_material.ambient;
+    vec3 ambient_component = light.ambient * material.ambient;
     
     // 2. diffuse component
     //      independent from camera's position, basically is the light reflected from the light source
     //      depending on the fragment surface's angle with the light source.
 
     // calculate a vector coming from the fragment, going to the light
-    vec3 light_direction = normalize(l_pos - v_pos);
+    vec3 light_direction = normalize(light.position - v_pos);
     // calculate the angle between the fragments normal, and the vector from the fragment to the light source.
     // the smaller the angle, the more orthogonal the fragment is to the light, then, the more light is reflected.
     float cos_diffuse = dot(v_norm, light_direction); // we need the cosine directly...
     // modulate the light intensity (light reflected = light source * material reflection) using the cosine from above
-    vec3 diffuse_component = u_light.diffuse * u_material.diffuse * cos_diffuse;
+    vec3 diffuse_component = light.diffuse * material.diffuse * cos_diffuse;
 
     // 3. specular: 
     //      calculated with the angle between the camera, and the light vector that bounced in the surface 
@@ -70,6 +77,11 @@ vec3 point_light(PointLight light, Material material) {
     
 }
 
+vec3 spot_light(SpotLight light, Material material) 
+{
+    return vec3(0.0, 0.0, 0.0);
+}
+
 void main () {
-    frag_color = vec4(point_light(u_light, u_material), 1.0); // mainLight() + flashLight();
+    frag_color = vec4(point_light(u_light, u_material) + spot_light(u_flashlight, u_material), 1.0);
 }

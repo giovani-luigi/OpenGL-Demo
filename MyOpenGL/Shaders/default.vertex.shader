@@ -17,13 +17,11 @@ uniform PointLight u_light;			// point light parameters
 
 out vec3 v_pos;						// output: vertex position in view's space
 out vec3 v_norm;					// output: vertex normal in view's space
-out vec3 l_pos;						// output: light position in view's space
 
 void main() {
 	// apply model and view transformations, but not perspective
 	v_pos =  vec3(u_view * u_model * vec4(i_pos.xyz, 1.0f));
 	v_norm = normalize(vec3(u_view * u_model * vec4(i_norm.xyz, 0.0f)));
-	l_pos = vec3(u_view * vec4(u_light.position, 1.0));
 	// apply all transformations
 	gl_Position = u_proj * u_view * u_model * vec4(i_pos.xyz, 1.0f); // WARNING!!! ORDER MATTERS
 }

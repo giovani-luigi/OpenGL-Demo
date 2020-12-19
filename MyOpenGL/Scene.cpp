@@ -137,23 +137,24 @@ void Scene::setup()
     // 4. create shaders to be used for the objects in the scene
     auto global_shader = create_global_shader();
     auto light_shader = create_light_shader();
-
+        
     // 5. load and add objects
 
     // add ground
     m_objects.push_back(new FloorSceneObject(global_shader));
 
+    /*
     // add walls by distorting the cube
     auto cube = new CubeSceneObject(global_shader);
     cube->get_transformation().translate(0.0f, 0.5f, 0.0f);
     cube->get_transformation().scale(0.1, 0.1, 0.1);
     m_objects.push_back(cube);
-
+    */
     // load statue from Wavefront file
 
-    /*auto statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader);
+    auto statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader, Material::create_white_marble());
     statue->get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
-    m_objects.push_back(statue);*/
+    m_objects.push_back(statue);
 }
 
 void Scene::draw()

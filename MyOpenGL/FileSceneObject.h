@@ -7,7 +7,7 @@ class FileSceneObject : public SceneObject
 {
 public:
 
-    static FileSceneObject* LoadFromObjFile(const char* file, Shader shader)
+    static FileSceneObject* LoadFromObjFile(const char* file, Shader shader, Material material)
     {
         tinyobj::ObjReaderConfig reader_config;
         reader_config.mtl_search_path = "./"; // path to material files...
@@ -65,13 +65,13 @@ public:
             }
         }
 
-        return new FileSceneObject(f_verts, f_norms, shader);
+        return new FileSceneObject(f_verts, f_norms, shader, material);
     }
 
 private:
 
-    FileSceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, Shader shader)
-        : SceneObject(vertices, normals, shader, STATIC)
+    FileSceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, Shader shader, Material material)
+        : SceneObject(vertices, normals, STATIC, shader, material)
     {
     }
 };
