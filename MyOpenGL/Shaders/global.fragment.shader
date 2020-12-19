@@ -1,22 +1,75 @@
-//
-// This fragment shader implements 2 light sources:
-//  1. Directional (moon)
-//  2. Spotlight (flashlight held at first person)
-//
-
 #version 400
 
-struct Light {
-    vec3 direction;  
-    vec3 ambient;
+struct Material {
+    vec3 specular;      // amount of specular reflection
+    vec3 diffuse;       // amount of diffuse reflection
+    vec3 ambient;       // amount of ambient reflection
+    float shininess;    // used for specular component
+};
+
+struct PointLight {
+    vec3 position;
+    vec3 ambient; 
     vec3 diffuse;
     vec3 specular;
 };
 
-//in vec3 vertex_posicao_cam, vertex_normal_cam;
-        
-out vec4 frag_colour;
+in vec3 v_pos;                    // vertex position in view space
+in vec3 v_norm;                   // vertex normal in view space
+in vec3 l_pos;                    // light position in view space (calculate at vertex shader for performance)
+
+uniform mat4 u_view;            // view matrix (camera)
+uniform Material u_material;    // material reflection parameters
+uniform PointLight u_light;     // point light emission parameters
+
+out vec4 frag_color;
+
+// calculates the color when using a point light.
+vec3 point_light(PointLight light, Material material) {
+    
+    // 1. ambient component
+    //      simulates a light far far away, that is coming from all angles
+    vec3 ambient_component = u_light.ambient * u_material.ambient;
+    
+    // 2. diffuse component
+    //      independent from camera's position, basically is the light reflected from the light source
+    //      depending on the fragment surface's angle with the light source.
+
+    // calculate a vector coming from the fragment, going to the light
+    vec3 light_direction = normalize(l_pos - v_pos);
+    // calculate the angle between the fragments normal, and the vector from the fragment to the light source.
+    // the smaller the angle, the more orthogonal the fragment is to the light, then, the more light is reflected.
+    float cos_diffuse = dot(v_norm, light_direction); // we need the cosine directly...
+    // modulate the light intensity (light reflected = light source * material reflection) using the cosine from above
+    vec3 diffuse_component = u_light.diffuse * u_material.diffuse * cos_diffuse;
+
+    // 3. specular: 
+    //      calculated with the angle between the camera, and the light vector that bounced in the surface 
+    //      coming from the light source. This generates a highlight giving a shine to the surface depending on 
+    //      how you look to it.
+    
+    // calculate the vector reflected by the surface, after being bounced (around the normal) from the light source:
+    // flip the vector from the fragment to the light, so it is a vector coming from the light to the fragment's surface
+    // then reflect that vector, around the fragment's normal
+    vec3 reflected_light = reflect(-light_direction, v_norm);
+    // now we need a vector coming from fragment's surface, going to the camera
+    vec3 frag_to_camera_vec = normalize(-v_pos);
+
+    // find the angle formed between the vector of the reflected light, and the vector frag--->cam
+    float cos_specular = dot(reflected_light, frag_to_camera_vec);
+
+    // optimization, skip calculation if no specular component is required (which in most of the time, its most of the fragments)
+    // also, ignore negative numbers of cossine
+    vec3 specular_component = vec3(0.0, 0.0, 0.0);
+    if (cos_specular > 0.0) { 
+        float specular_coefficient = pow(cos_specular, material.shininess);
+        specular_component = light.specular * material.specular * specular_coefficient;
+    }    
+    
+    return (ambient_component + diffuse_component + specular_component);
+    
+}
 
 void main () {
-    frag_colour = vec4(1.0, 0.8, 0.8, 1.0); // mainLight() + flashLight();
+    frag_color = vec4(point_light(u_light, u_material), 1.0); // mainLight() + flashLight();
 }

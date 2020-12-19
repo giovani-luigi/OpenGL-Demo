@@ -32,7 +32,8 @@ public:
 protected:
 
     GLuint m_vao;
-    GLuint m_vbo;
+    GLuint m_vbo{};   // buffer for vertex position
+    GLuint m_nvbo{};  // buffer for vertex normal
 
     Transform3D m_transformation;
     Shader m_shader;

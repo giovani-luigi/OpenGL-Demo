@@ -1,6 +1,6 @@
 #include "FloorSceneObject.h"
 
-FloorSceneObject::FloorSceneObject(const Camera& camera, Shader shader) :
+FloorSceneObject::FloorSceneObject(Shader shader) :
     SceneObject(
         QuadSurfaceSceneObject::generate_vertices(vector<glm::vec3>{
             glm::vec3(-1, 0, +1),
@@ -14,8 +14,7 @@ FloorSceneObject::FloorSceneObject(const Camera& camera, Shader shader) :
             glm::vec3(+1, 0, -1),
             glm::vec3(-1, 0, -1),
         }),
-        shader, DYNAMIC),
-    m_camera(camera)
+        shader, DYNAMIC)
 {
 }
 
@@ -23,7 +22,7 @@ void FloorSceneObject::draw(const Camera& camera, const glm::mat4& projection)
 {
     // recalculate corners
     auto c = camera.get_position();
-    float size = 1.0f;
+    float size = 100.0f;
     const auto corners = vector<glm::vec3>{
         glm::vec3(c.x - size, 0.0f, c.z + size),
         glm::vec3(c.x + size, 0.0f, c.z + size),

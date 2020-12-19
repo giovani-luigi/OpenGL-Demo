@@ -1,16 +1,29 @@
 #version 400
 
-layout(location=0) in vec4 pos;
-//layout(location=1) in vec4 norm;
+struct PointLight {
+	vec3 position;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
 
-uniform mat4 model;   // model transformation
-uniform mat4 view;  // camera (view) matrix
-uniform mat4 proj;    // projection matrix
+layout(location=0) in vec4 i_pos;	// vertex position
+layout(location=1) in vec4 i_norm;	// vertex normal
 
-//out vec4 cam_rel_pos cam_rel_norm;
+uniform mat4 u_model;				// model transformation
+uniform mat4 u_view;				// camera (view) matrix
+uniform mat4 u_proj;				// projection matrix
+uniform PointLight u_light;			// point light parameters
+
+out vec3 v_pos;						// output: vertex position in view's space
+out vec3 v_norm;					// output: vertex normal in view's space
+out vec3 l_pos;						// output: light position in view's space
 
 void main() {
-   //cam_rel_pos = view * trans * vec4(pos.xyz, 1.0f);
-   //cam_rel_norm = view * trans * vec4(pos.xyz, 0.0f);
-   gl_Position = proj * view * model * vec4(pos.xyz, 1.0f); // WARNING!!! ORDER MATTERS
+	// apply model and view transformations, but not perspective
+	v_pos =  vec3(u_view * u_model * vec4(i_pos.xyz, 1.0f));
+	v_norm = normalize(vec3(u_view * u_model * vec4(i_norm.xyz, 0.0f)));
+	l_pos = vec3(u_view * vec4(u_light.position, 1.0));
+	// apply all transformations
+	gl_Position = u_proj * u_view * u_model * vec4(i_pos.xyz, 1.0f); // WARNING!!! ORDER MATTERS
 }
