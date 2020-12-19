@@ -31,6 +31,7 @@ private:
     GLFWwindow* m_window;
     std::vector<SceneObject*> m_objects; // it uses pointers due to polypmorphic behavior, which results in 'object slicing'
     Camera m_camera;
+    SceneLights m_lights;
     glm::mat4 m_projection;
     double m_lastFrameTime;
     double m_deltaTime = 0;

@@ -1,8 +1,8 @@
 #include "Scene.h"
 
 Scene::Scene(GLFWwindow* window) :
-    m_window(window), m_lastFrameTime(0), m_frame(0),
-    m_mouse_first(true), m_camera(*this), m_projection()
+    m_window(window), m_camera(*this), m_lights(SceneLights::create_default(m_camera)),
+    m_projection(), m_lastFrameTime(0), m_mouse_first(true), m_frame(0)
 {
 }
 
@@ -150,8 +150,8 @@ void Scene::setup()
     cube->get_transformation().scale(0.1, 0.1, 0.1);
     m_objects.push_back(cube);
     */
-    // load statue from Wavefront file
 
+    // load statue from Wavefront file
     auto statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader, Material::create_white_marble());
     statue->get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
     m_objects.push_back(statue);
@@ -167,10 +167,11 @@ void Scene::draw()
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    
     // render all scene objects
     for (SceneObject* obj : m_objects)
     {
-        obj->draw(m_camera, m_projection); // this will respect the polymorphism since we are using pointer
+        m_lights.set_uniforms(obj->get_shader()); // update light uniforms
+        obj->draw(m_camera, m_projection, m_lights); // this will respect the polymorphism since we are using pointer
     }
 }

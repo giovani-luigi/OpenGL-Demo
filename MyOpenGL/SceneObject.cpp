@@ -22,7 +22,7 @@ SceneObject::SceneObject(const std::vector<float>& vertices, const std::vector<f
     glEnableVertexAttribArray(1); // enable the attribute
 }
 
-void SceneObject::draw(const Camera& camera, const glm::mat4& projection)
+void SceneObject::draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
 {
     // use specified shader for this object
     m_shader.use();
@@ -33,15 +33,6 @@ void SceneObject::draw(const Camera& camera, const glm::mat4& projection)
     m_shader.setMat4("u_model", m_transformation.get_matrix());
 
     // update uniforms for fragment shader
-
-    glm::vec3 light_pos(0.0f, 0.5f, 0.5f); // light position in the scene
-    auto l_pos = camera.get_matrix() * glm::vec4(light_pos, 1.0); // put light in view space
-
-    m_shader.setVec3("u_light.position", l_pos.x, l_pos.y, l_pos.z); // light position in view space
-    m_shader.setVec3("u_light.specular", 0.2f, 0.2f, 0.1f); // light specular emission
-    m_shader.setVec3("u_light.diffuse", 1.0f, 1.0f, 1.0f); // light diffuse emission
-    m_shader.setVec3("u_light.ambient", 0.5f, 0.5f, 0.5f); // light ambient emission
-    
     m_material.set_uniforms(m_shader);
     
     glBindVertexArray(m_vao);

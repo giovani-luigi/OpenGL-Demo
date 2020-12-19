@@ -456,6 +456,7 @@
     <ClInclude Include="FileSceneObject.h" />
     <ClInclude Include="Projection.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneLights.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="CubeSceneObject.h" />

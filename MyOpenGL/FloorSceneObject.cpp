@@ -20,7 +20,7 @@ FloorSceneObject::FloorSceneObject(Shader shader) :
 {
 }
 
-void FloorSceneObject::draw(const Camera& camera, const glm::mat4& projection)
+void FloorSceneObject::draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
 {
     // recalculate corners
     auto c = camera.get_position();
@@ -41,5 +41,5 @@ void FloorSceneObject::draw(const Camera& camera, const glm::mat4& projection)
     glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float), &m_vertices[0]);
 
     // run base class code
-    SceneObject::draw(camera, projection);
+    SceneObject::draw(camera, projection, lights);
 }
