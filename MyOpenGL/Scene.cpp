@@ -1,6 +1,5 @@
 #include "Scene.h"
 
-
 Scene::Scene(GLFWwindow* window) :
     m_window(window), m_lastFrameTime(0), m_frame(0),
     m_mouse_first(true), m_camera(*this), m_projection()
@@ -9,9 +8,9 @@ Scene::Scene(GLFWwindow* window) :
 
 Scene::~Scene()
 {
-    for (const auto& object : m_objects)
+    for (const SceneObject* object : m_objects)
     {
-        // delete them?
+        delete(object);
     }
 }
 
@@ -142,17 +141,18 @@ void Scene::setup()
     // 5. load and add objects
 
     // add ground
+    m_objects.push_back(new FloorSceneObject(m_camera, global_shader));
 
     // add walls by distorting the cube
-    auto cube = CubeSceneObject(light_shader);
-    cube.get_transformation().translate(-0.5, 0, 0);
-    cube.get_transformation().scale(0.5, 0.5, 0.5);
+    auto cube = new CubeSceneObject(light_shader);
+    cube->get_transformation().translate(-0.5, 0, 0);
+    cube->get_transformation().scale(0.5, 0.5, 0.5);
     m_objects.push_back(cube);
 
     // load statue from Wavefront file
 
-    SceneObject statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader);
-    statue.get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
+    auto statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader);
+    statue->get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
     m_objects.push_back(statue);
 }
 
@@ -168,8 +168,8 @@ void Scene::draw()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // render all scene objects
-    for (auto& obj : m_objects)
+    for (SceneObject* obj : m_objects)
     {
-        obj.draw(m_camera, m_projection);
+        obj->draw(m_camera, m_projection); // this will respect the polymorphism since we are using pointer
     }
 }

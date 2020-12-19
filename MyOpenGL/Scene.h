@@ -2,17 +2,17 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "GLM/ext/matrix_clip_space.hpp"
 #include <vector>
+#include <filesystem>
+
 #include "Debug.h"
 #include "SceneObject.h"
 #include "Shader.h"
-
-#include <filesystem>
-
 #include "Camera.h"
 #include "CubeSceneObject.h"
 #include "FileSceneObject.h"
-#include "GLM/ext/matrix_clip_space.hpp"
+#include "FloorSceneObject.h"
 
 class Scene
 {
@@ -29,7 +29,7 @@ public:
 private:
 
     GLFWwindow* m_window;
-    std::vector<SceneObject> m_objects;
+    std::vector<SceneObject*> m_objects; // it uses pointers due to polypmorphic behavior, which results in 'object slicing'
     Camera m_camera;
     glm::mat4 m_projection;
     double m_lastFrameTime;
@@ -44,7 +44,6 @@ private:
     Shader create_global_shader();
     Shader create_light_shader();
 
-    void update_shaders();
     void setup_projection();
     void setup();
     void draw();

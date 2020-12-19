@@ -57,7 +57,7 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InfiniteGroundSceneObject.cpp">
+    <ClCompile Include="FloorSceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -956,7 +956,7 @@
     <ClInclude Include="QuadSurfaceSceneObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfiniteGroundSceneObject.h">
+    <ClInclude Include="FloorSceneObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
