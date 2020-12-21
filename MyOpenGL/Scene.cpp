@@ -151,10 +151,18 @@ void Scene::setup()
     m_objects.push_back(cube);
     */
 
-    // load statue from Wavefront file
+    // load rock from Wavefront file
+    auto statue = FileSceneObject::LoadFromObjFile("milo.obj", global_shader, Material::create_white_marble());
+    statue->get_transformation().rotate_x_deg(-90);
+    statue->get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
+    m_objects.push_back(statue);
+
+    /*
+    // load statue from Wavefront file    
     auto statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader, Material::create_white_marble());
     statue->get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
     m_objects.push_back(statue);
+    */
 }
 
 void Scene::draw()

@@ -1,6 +1,8 @@
 #version 400
 
 struct Material {
+    bool has_texture;   // flag the indicates when a texture is loaded.
+    sampler2D texture_unit;
     vec3 specular;      // amount of specular reflection
     vec3 diffuse;       // amount of diffuse reflection
     vec3 ambient;       // amount of ambient reflection
@@ -22,11 +24,13 @@ struct SpotLight {
 
 in vec3 v_pos;                    // vertex position in view space
 in vec3 v_norm;                   // vertex normal in view space
+in vec2 v_text;                   // vertex texture coordinates
 
 uniform mat4 u_view;              // view matrix (camera)
 uniform Material u_material;      // material reflection parameters
 uniform PointLight u_light;       // point light emission parameters
 uniform SpotLight u_flashlight;   // spot light emission parameters
+
 
 out vec4 frag_color;
 
@@ -73,6 +77,13 @@ vec3 point_light(PointLight light, Material material)
         specular_component = light.specular * material.specular * specular_coefficient;
     }    
     
+    if (u_material.has_texture) {
+        vec3 text_color = vec3(texture(u_material.texture_unit, v_text));
+        ambient_component *= text_color;
+        diffuse_component *= text_color;
+        specular_component *= text_color;
+    }
+
     return (ambient_component + diffuse_component + specular_component);
     
 }
@@ -82,6 +93,7 @@ vec3 spot_light(SpotLight light, Material material)
     return vec3(0.0, 0.0, 0.0);
 }
 
-void main () {
-    frag_color = vec4(point_light(u_light, u_material) + spot_light(u_flashlight, u_material), 1.0);
+void main () 
+{
+    frag_color = vec4(point_light(u_light, u_material) + spot_light(u_flashlight, u_material), 1.0);   
 }

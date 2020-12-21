@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "Material.h"
 #include "SceneLights.h"
+#include "Texture.h"
 
 class SceneObject
 {
@@ -22,24 +23,24 @@ public:
 
     virtual void draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights);
 
-    // gets the transformation to be used by the shader
     Transform3D& get_transformation() { return m_transformation; }
-
     GLuint get_vertex_buffer_id() const { return m_vbo; }
-
     Shader& get_shader() { return m_shader; }
-
 
 protected:
 
     GLuint m_vao;
-    GLuint m_vbo{};   // buffer for vertex position
-    GLuint m_nvbo{};  // buffer for vertex normal
+    GLuint m_vbo;   // buffer for vertex position
+    GLuint m_nvbo;  // buffer for vertex normal
+    GLuint m_tvbo;  // buffer for vertex texture
 
     Transform3D m_transformation;
     Material m_material;
     Shader m_shader;
+    Texture m_texture;
 
     std::vector<float> m_vertices;
     std::vector<float> m_normals;
+    std::vector<float> m_texels;
+
 };

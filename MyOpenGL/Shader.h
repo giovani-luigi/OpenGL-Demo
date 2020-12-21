@@ -20,6 +20,7 @@ public:
     static GLuint createShaders(const std::string& vertexShader, const std::string& fragmentShader);
 
     Shader();
+    void dispose();
     Shader(const char* vertexPath, const char* fragmentPath);
 
     // activate the shader

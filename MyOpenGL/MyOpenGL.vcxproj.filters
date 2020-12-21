@@ -63,6 +63,12 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SkyBoxSceneObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -968,6 +974,15 @@
     <ClInclude Include="SceneLights.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBoxSceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="STB\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="Models\Statue.obj">
@@ -980,6 +995,11 @@
     <CopyFileToFolders Include="Shaders\global.fragment.shader">
       <Filter>Shaders</Filter>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\milo_12328_Statue.jpg">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\milo.obj" />
+    <CopyFileToFolders Include="Models\milo.mtl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GLM\detail\func_common.inl">

@@ -65,6 +65,12 @@ Shader::Shader() : ID(0)
 {
 }
 
+void Shader::dispose()
+{
+    if (ID != 0)
+        glDeleteProgram(ID);
+}
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
     // 1. retrieve the vertex/fragment source code from filePath

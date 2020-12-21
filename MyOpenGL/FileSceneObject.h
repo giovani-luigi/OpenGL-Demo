@@ -10,7 +10,7 @@ public:
     static FileSceneObject* LoadFromObjFile(const char* file, Shader shader, Material material)
     {
         tinyobj::ObjReaderConfig reader_config;
-        reader_config.mtl_search_path = "./"; // path to material files...
+        //reader_config.mtl_search_path = "./"; // path to material files...
 
         tinyobj::ObjReader reader;
 
@@ -34,11 +34,12 @@ public:
 
         std::vector<float> f_verts;
         std::vector<float> f_norms;
+        std::vector<float> f_texts;
 
         // Loop over shapes
         for (const auto& shape : shapes)
         {
-            // Loop over faces(polygon)
+            // Loop over faces
             size_t index_offset = 0;
             for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++)
             {
@@ -57,12 +58,28 @@ public:
 
                     f_norms.push_back(attrib.normals[3 * idx.normal_index + 0]); // nx
                     f_norms.push_back(attrib.normals[3 * idx.normal_index + 1]); // ny
-                    f_norms.push_back(attrib.normals[3 * idx.normal_index + 2]); // nz					
+                    f_norms.push_back(attrib.normals[3 * idx.normal_index + 2]); // nz
+
+                    f_texts.push_back(attrib.texcoords[2 * idx.texcoord_index + 0]); // tv
+                    f_texts.push_back(attrib.texcoords[2 * idx.texcoord_index + 1]); // tt
+
                 }
                 index_offset += fv;
                 // per-face material
                 shape.mesh.material_ids[f];
             }
+        }
+
+        // use materials if found
+        if (!materials.empty())
+        {
+            material = Material::create_texture(
+                f_texts,
+                materials[0].diffuse_texname,
+                reinterpret_cast<const glm::vec3&>(materials[0].ambient),
+                reinterpret_cast<const glm::vec3&>(materials[0].diffuse),
+                reinterpret_cast<const glm::vec3&>(materials[0].specular),
+                materials[0].shininess);
         }
 
         return new FileSceneObject(f_verts, f_norms, shader, material);
