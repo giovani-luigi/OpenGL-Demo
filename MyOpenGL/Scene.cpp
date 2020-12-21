@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include "SkyBoxSceneObject.h"
+
 Scene::Scene(GLFWwindow* window) :
     m_window(window), m_camera(*this), m_lights(SceneLights::create_default(m_camera)),
     m_projection(), m_lastFrameTime(0), m_mouse_first(true), m_frame(0)
@@ -142,6 +144,17 @@ void Scene::setup()
 
     // add ground
     m_objects.push_back(new FloorSceneObject(global_shader));
+
+    // add skybox
+    m_objects.push_back(new SkyBoxSceneObject(
+    "Images\\skybox1\\",
+    "LeftImage.png",
+    "RightImage.png",
+    "TopImage.png",
+    "BottomImage.png",
+    "FrontImage.png",
+    "BackImage.png"
+    ));
 
     /*
     // add walls by distorting the cube

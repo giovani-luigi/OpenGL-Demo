@@ -1000,6 +1000,26 @@
     </CopyFileToFolders>
     <CopyFileToFolders Include="Models\milo.obj" />
     <CopyFileToFolders Include="Models\milo.mtl" />
+    <CopyFileToFolders Include="Shaders\skybox.fragment.shader" />
+    <CopyFileToFolders Include="Shaders\skybox.vertex.shader" />
+    <CopyFileToFolders Include="Images\skybox1\BackImage.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Images\skybox1\BottomImage.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Images\skybox1\FrontImage.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Images\skybox1\LeftImage.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Images\skybox1\RightImage.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Images\skybox1\TopImage.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <None Include="GLM\detail\func_common.inl">

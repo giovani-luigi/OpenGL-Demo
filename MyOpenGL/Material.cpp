@@ -16,8 +16,7 @@ void Material::use(Shader& shader)
     shader.setVec3("u_material.diffuse", m_diffuse.r, m_diffuse.g, m_diffuse.b); // material diffuse reflection
     shader.setVec3("u_material.ambient", m_ambient.r, m_ambient.g, m_ambient.b); // material ambient reflection
     shader.setFloat("u_material.shininess", m_shininess);
-
-    
+        
     shader.setInt("u_material.texture_unit", 0);
 
     if (has_texture())
