@@ -6,7 +6,7 @@ uniform mat4 u_model;				// model transformation
 uniform mat4 u_view;				// camera (view) matrix
 uniform mat4 u_proj;				// projection matrix
 
-out vec3 v_text;					// output: vertex texture coordinate
+out vec3 frag_text;					// output: texture coordinate
 
 void main() {
 
@@ -22,5 +22,5 @@ void main() {
 	// in the case of a cube and probably much more for a sphere) and it gets interpolated 
 	// by the rasterizer for each pixel. This gives us the position of the pixel which we 
 	// can use for sampling.
-	v_text = normalize(i_pos.xyz);
+	frag_text = normalize(i_pos.xyz);
 }

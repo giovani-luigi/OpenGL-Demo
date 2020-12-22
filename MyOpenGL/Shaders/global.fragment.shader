@@ -10,8 +10,11 @@ struct Material {
 };
 
 struct PointLight {
-    vec3 position;      // position must be in view space
-    vec3 ambient; 
+    float decayConstant;    // decay constant coefficient 
+    float decayLinear;      // decay linear coefficient 
+    float decayQuadratic;   // decay quadratic coefficient 
+    vec3 position;          // position must be in view space
+    vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
@@ -22,9 +25,9 @@ struct SpotLight {
     float aperture;
 };
 
-in vec3 v_pos;                    // vertex position in view space
-in vec3 v_norm;                   // vertex normal in view space
-in vec2 v_text;                   // vertex texture coordinates
+in vec3 frag_pos;                 // position in view space
+in vec3 frag_norm;                // normal in view space
+in vec2 frag_text;                // texture coordinates
 
 uniform mat4 u_view;              // view matrix (camera)
 uniform Material u_material;      // material reflection parameters
@@ -37,6 +40,11 @@ out vec4 frag_color;
 // calculates the color when using a point light.
 vec3 point_light(PointLight light, Material material) 
 {
+    vec3 light_vector = light.position - frag_pos;
+
+    // calculate attenuation of the light over the distance
+    float distance = length(light_vector); // get the length of the vector from fragment to light position
+    float decay = 1.0 / (light.decayConstant + (light.decayLinear * distance) + (light.decayQuadratic * (distance * distance)));
 
     // 1. ambient component
     //      simulates a light far far away, that is coming from all angles
@@ -47,10 +55,10 @@ vec3 point_light(PointLight light, Material material)
     //      depending on the fragment surface's angle with the light source.
 
     // calculate a vector coming from the fragment, going to the light
-    vec3 light_direction = normalize(light.position - v_pos);
+    vec3 light_direction = normalize(light_vector);
     // calculate the angle between the fragments normal, and the vector from the fragment to the light source.
     // the smaller the angle, the more orthogonal the fragment is to the light, then, the more light is reflected.
-    float cos_diffuse = dot(v_norm, light_direction); // we need the cosine directly...
+    float cos_diffuse = dot(frag_norm, light_direction); // we need the cosine directly...
     // modulate the light intensity (light reflected = light source * material reflection) using the cosine from above
     vec3 diffuse_component = light.diffuse * material.diffuse * cos_diffuse;
 
@@ -62,9 +70,9 @@ vec3 point_light(PointLight light, Material material)
     // calculate the vector reflected by the surface, after being bounced (around the normal) from the light source:
     // flip the vector from the fragment to the light, so it is a vector coming from the light to the fragment's surface
     // then reflect that vector, around the fragment's normal
-    vec3 reflected_light = reflect(-light_direction, v_norm);
+    vec3 reflected_light = reflect(-light_direction, frag_norm);
     // now we need a vector coming from fragment's surface, going to the camera
-    vec3 frag_to_camera_vec = normalize(-v_pos);
+    vec3 frag_to_camera_vec = normalize(-frag_pos);
 
     // find the angle formed between the vector of the reflected light, and the vector frag--->cam
     float cos_specular = dot(reflected_light, frag_to_camera_vec);
@@ -78,13 +86,18 @@ vec3 point_light(PointLight light, Material material)
     }    
     
     if (u_material.has_texture) {
-        vec3 text_color = vec3(texture(u_material.texture_unit, v_text));
+        vec3 text_color = vec3(texture(u_material.texture_unit, frag_text));
         ambient_component *= text_color;
         diffuse_component *= text_color;
         specular_component *= text_color;
     }
 
-    return (ambient_component + diffuse_component + specular_component);
+    /*
+        We could leave the ambient component alone so ambient lighting is not decreased over distance, 
+        but if we were to use more than 1 light source all the ambient components will start to stack up. 
+        In that case we want to attenuate ambient lighting as well. Choose what's best for your environment.
+    */
+    return (ambient_component * decay + diffuse_component * decay + specular_component * decay);
     
 }
 

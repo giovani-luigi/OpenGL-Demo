@@ -50,6 +50,16 @@ Material Material::create_white_marble()
     );
 }
 
+Material Material::create_white_plastic()
+{
+    return Material(
+        glm::vec3(0.2f, 0.2f, 0.2f),
+        glm::vec3(0.5f, 0.5f, 0.5f),
+        glm::vec3(0.75f, 0.75f, 0.75f),
+        0
+    );
+}
+
 Material Material::create_brown_floor()
 {
     return Material(

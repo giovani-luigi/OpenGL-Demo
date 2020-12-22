@@ -13,6 +13,7 @@ public:
     // factory methods:
     static Material create_default();
     static Material create_white_marble();
+    static Material create_white_plastic();
     static Material create_brown_floor();
     static Material create_night_floor();
     static Material create_dark_grey_rock();

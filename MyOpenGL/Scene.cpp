@@ -42,20 +42,20 @@ void Scene::process_key(int keyCode, int scanCode, int action, int modifiers)
         //auto cam_pos = m_uniforms.camera.get_position();
 
         const float step = m_deltaTime * m_keyboard_speed;
-        if (keyCode == GLFW_KEY_UP)
+        if (keyCode == GLFW_KEY_UP || keyCode == GLFW_KEY_W)
         {
             //if (!m_uniforms.collides(m_objects))
             m_camera.walk(Camera::FORWARD, step);
         }
-        else if (keyCode == GLFW_KEY_DOWN)
+        else if (keyCode == GLFW_KEY_DOWN || keyCode == GLFW_KEY_S)
         {
             m_camera.walk(Camera::BACKWARD, step);
         }
-        else if (keyCode == GLFW_KEY_LEFT)
+        else if (keyCode == GLFW_KEY_LEFT || keyCode == GLFW_KEY_A)
         {
             m_camera.walk(Camera::LEFT, step);
         }
-        else if (keyCode == GLFW_KEY_RIGHT)
+        else if (keyCode == GLFW_KEY_RIGHT || keyCode == GLFW_KEY_D)
         {
             m_camera.walk(Camera::RIGHT, step);
         }
@@ -75,10 +75,8 @@ void Scene::process_key(int keyCode, int scanCode, int action, int modifiers)
         {
             m_camera.zoom(-0.25);
         }
-        else if (keyCode == GLFW_KEY_S)
-        {
-        }
-        Debug::print_debug(m_camera, m_projection);
+        
+       // Debug::print_debug(m_camera, m_projection);
     }
 }
 
@@ -180,15 +178,22 @@ void Scene::setup()
     m_objects.push_back(arch);
 
     // load entry arch from Wavefront file
-    auto flashlight = FileSceneObject::LoadFromObjFile("Linterna.obj", global_shader, Material::create_default());
+    auto arch2 = FileSceneObject::LoadFromObjFile("Arch.obj", global_shader, Material::create_yellow_rock());
+    arch2->get_transformation().translate(0., 0., -8);
+    arch2->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    m_objects.push_back(arch2);
 
+    // load flashligth from Wavefront file
+    auto flashlight = FileSceneObject::LoadFromObjFile("Linterna.obj", global_shader, Material::create_white_plastic());
     // hold the flashlight a bit lower than camera's eye and a bit to the front so it is within FOV
     flashlight->get_transformation().translate(0, -0.1, -0.2); // but if you hold too low, it goes out of the projection's FOV 
-    flashlight->get_transformation().rotate_x_deg( -90 );
-
+    flashlight->get_transformation().rotate_x_deg( -90 ); // fix model orientation
     flashlight->get_transformation().scale(1.0f / 100, 1.0f / 100, 1.0f / 100);
     flashlight->FollowsCamera = true;
     m_objects.push_back(flashlight);
+
+
+
 }
 
 void Scene::draw()
