@@ -27,6 +27,8 @@ public:
     GLuint get_vertex_buffer_id() const { return m_vbo; }
     Shader& get_shader() { return m_shader; }
 
+    bool FollowsCamera;
+
 protected:
 
     GLuint m_vao;

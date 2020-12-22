@@ -1,5 +1,4 @@
 #include "Scene.h"
-
 #include "SkyBoxSceneObject.h"
 
 Scene::Scene(GLFWwindow* window) :
@@ -135,7 +134,7 @@ void Scene::setup()
 
     // 3. initialize shader parameters, such as camera and projections    
     setup_projection();
-    m_camera.set_position(glm::vec3(0., 0.5, 1.0));
+    m_camera.set_position(glm::vec3(0., 0.5, 0.0));
 
     // 4. create shaders to be used for the objects in the scene
     auto global_shader = create_global_shader();
@@ -163,9 +162,7 @@ void Scene::setup()
     statue->get_transformation().rotate_x_deg(-90);
     statue->get_transformation().scale(1.0f / 300, 1.0f / 300, 1.0f / 300);
     m_objects.push_back(statue);
-
     
-
     // load colums around the arch from Wavefront file
     auto column1 = FileSceneObject::LoadFromObjFile("Column.obj", global_shader, Material::create_dark_grey_rock());
     column1->get_transformation().translate(-0.8, 0., -1);
@@ -182,12 +179,15 @@ void Scene::setup()
     arch->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
     m_objects.push_back(arch);
 
-    
     // load entry arch from Wavefront file
-    auto flashlight = FileSceneObject::LoadFromObjFile("Linterna.obj", global_shader, Material::create_yellow_rock());
-    flashlight->get_transformation().translate(0., 0.5, 0.0);
-    flashlight->get_transformation().rotate_x_deg(-90);
+    auto flashlight = FileSceneObject::LoadFromObjFile("Linterna.obj", global_shader, Material::create_default());
+
+    // hold the flashlight a bit lower than camera's eye and a bit to the front so it is within FOV
+    flashlight->get_transformation().translate(0, -0.1, -0.2); // but if you hold too low, it goes out of the projection's FOV 
+    flashlight->get_transformation().rotate_x_deg( -90 );
+
     flashlight->get_transformation().scale(1.0f / 100, 1.0f / 100, 1.0f / 100);
+    flashlight->FollowsCamera = true;
     m_objects.push_back(flashlight);
 }
 

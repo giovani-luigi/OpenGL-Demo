@@ -3,8 +3,16 @@
 #include <utility>
 
 
-SceneObject::SceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, SceneObjectType type, Shader shader, Material material) :
-    m_vao(0), m_material(material), m_shader(shader), m_texture(), m_vertices(vertices), m_normals(normals)
+SceneObject::SceneObject(
+    const std::vector<float>& vertices, 
+    const std::vector<float>& normals, 
+    SceneObjectType type,
+    Shader shader, 
+    Material material
+) :
+    FollowsCamera(false), m_vao(0), m_tvbo(0),
+    m_material(material), m_shader(shader), m_texture(),
+    m_vertices(vertices), m_normals(normals)
 {
     // create the VBO and assign the VAO
     glGenVertexArrays(1, &m_vao);
@@ -38,7 +46,7 @@ SceneObject::SceneObject(const std::vector<float>& vertices, const std::vector<f
     else
     {
         glDisableVertexAttribArray(2); // disable the texture coordinate attribute    
-    }    
+    }
 }
 
 void SceneObject::draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
@@ -47,9 +55,24 @@ void SceneObject::draw(const Camera& camera, const glm::mat4& projection, const 
     m_shader.use();
 
     // update uniforms for vertex shader
-    m_shader.setMat4("u_view", camera.get_matrix()); // camera matrix
+    m_shader.setMat4("u_view", camera.get_matrix());
     m_shader.setMat4("u_proj", projection); // projection matrix
-    m_shader.setMat4("u_model", m_transformation.get_matrix());
+
+    if (FollowsCamera)
+    {
+        // counter act camera's transformations
+        const auto cp = camera.get_position();
+        m_shader.setMat4("u_model", Transform3D()
+            .translate(cp.x, cp.y, cp.z)
+            .rotate_y_deg((camera.get_yaw_deg()+90)*-1 ) // camera's initial YAW is -90 deg.
+            .rotate_x_deg(camera.get_pitch_deg())
+            .combine(m_transformation)
+            .get_matrix());            
+    }
+    else
+    {
+        m_shader.setMat4("u_model", m_transformation.get_matrix());        
+    }
 
     // activate material
     m_material.use(m_shader);
