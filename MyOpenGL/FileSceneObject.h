@@ -15,7 +15,7 @@ public:
         tinyobj::ObjReader reader;
 
         // handle parser errors and warnings
-        if (!reader.ParseFromFile(file, reader_config))
+        if (!reader.ParseFromFile("Models\\" + std::string(file), reader_config))
         {
             if (!reader.Error().empty())
             {
@@ -60,8 +60,11 @@ public:
                     f_norms.push_back(attrib.normals[3 * idx.normal_index + 1]); // ny
                     f_norms.push_back(attrib.normals[3 * idx.normal_index + 2]); // nz
 
-                    f_texts.push_back(attrib.texcoords[2 * idx.texcoord_index + 0]); // tv
-                    f_texts.push_back(attrib.texcoords[2 * idx.texcoord_index + 1]); // tt
+                    if (!attrib.texcoords.empty())
+                    {
+                        f_texts.push_back(attrib.texcoords[2 * idx.texcoord_index + 0]); // tv
+                        f_texts.push_back(attrib.texcoords[2 * idx.texcoord_index + 1]); // tt    
+                    }
 
                 }
                 index_offset += fv;
@@ -73,13 +76,16 @@ public:
         // use materials if found
         if (!materials.empty())
         {
-            material = Material::create_texture(
-                f_texts,
-                materials[0].diffuse_texname,
-                reinterpret_cast<const glm::vec3&>(materials[0].ambient),
-                reinterpret_cast<const glm::vec3&>(materials[0].diffuse),
-                reinterpret_cast<const glm::vec3&>(materials[0].specular),
-                materials[0].shininess);
+            if (!attrib.texcoords.empty())
+            {
+                material = Material::create_texture(
+                    f_texts,
+                    "Models\\" + materials[0].diffuse_texname,
+                    material.get_ambient_component(),
+                    material.get_diffuse_component(),
+                    material.get_specular_component(),
+                    material.get_shininess());
+            }            
         }
 
         return new FileSceneObject(f_verts, f_norms, shader, material);

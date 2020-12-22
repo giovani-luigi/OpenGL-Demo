@@ -11,8 +11,12 @@ class Material
 public:
 
     // factory methods:
+    static Material create_default();
     static Material create_white_marble();
     static Material create_brown_floor();
+    static Material create_night_floor();
+    static Material create_dark_grey_rock();
+    static Material create_yellow_rock();
 
     static Material create_texture(
         const vector<float>& coordinates, 
@@ -21,6 +25,12 @@ public:
         const glm::vec3& diffuse,
         const glm::vec3& specular, 
         float shininess);
+
+    // getters
+    const glm::vec3& get_specular_component() const { return m_specular; }
+    const glm::vec3& get_diffuse_component() const { return m_diffuse; }
+    const glm::vec3& get_ambient_component() const { return m_ambient; }
+    float get_shininess() const { return m_shininess; }
 
     // methods
     void use(Shader& shader);

@@ -41,6 +41,7 @@ private:
     int m_frame;
     float m_mouse_sensitivity = 0.1f;
     float m_keyboard_speed = 2.5f;
+    bool m_enable_shadow;
 
     Shader create_global_shader();
     Shader create_light_shader();

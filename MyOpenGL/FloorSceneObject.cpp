@@ -14,31 +14,16 @@ FloorSceneObject::FloorSceneObject(Shader shader) :
             glm::vec3(+1, 0, -1),
             glm::vec3(-1, 0, -1),
         }),
-        DYNAMIC, 
+        STATIC, 
         shader, 
-        Material::create_brown_floor())
+        Material::create_night_floor())
 {
 }
 
 void FloorSceneObject::draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
 {
-    // recalculate corners
-    auto c = camera.get_position();
-    float size = 100.0f;
-    const auto corners = vector<glm::vec3>{
-        glm::vec3(c.x - size, 0.0f, c.z + size),
-        glm::vec3(c.x + size, 0.0f, c.z + size),
-        glm::vec3(c.x + size, 0.0f, c.z - size),
-        glm::vec3(c.x - size, 0.0f, c.z - size),
-    };
-
-    // update RAM buffer
-    m_vertices = QuadSurfaceSceneObject::generate_vertices(corners);
-    m_normals = QuadSurfaceSceneObject::generate_normals(corners);
-
-    // update VRAM buffer
-    glBindBuffer(GL_ARRAY_BUFFER, get_vertex_buffer_id());
-    glBufferSubData(GL_ARRAY_BUFFER, 0, m_vertices.size() * sizeof(float), &m_vertices[0]);
+    const auto cam_pos = camera.get_position();
+    m_transformation = Transform3D().translate(cam_pos.x, 0.0f, cam_pos.z).scale(100, 100, 100);
 
     // run base class code
     SceneObject::draw(camera, projection, lights);

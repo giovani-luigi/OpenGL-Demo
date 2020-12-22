@@ -3,8 +3,9 @@
 #include "SkyBoxSceneObject.h"
 
 Scene::Scene(GLFWwindow* window) :
-    m_window(window), m_camera(*this), m_lights(SceneLights::create_default(m_camera)),
-    m_projection(), m_lastFrameTime(0), m_mouse_first(true), m_frame(0)
+    m_window(window), m_camera(*this), m_lights(SceneLights::create_night(m_camera)),
+    m_projection(), m_lastFrameTime(0), m_mouse_x(0), m_mouse_y(0), m_mouse_first(true),
+    m_frame(0), m_enable_shadow(false)
 {
 }
 
@@ -156,26 +157,38 @@ void Scene::setup()
     "BackImage.png"
     ));
 
-    /*
-    // add walls by distorting the cube
-    auto cube = new CubeSceneObject(global_shader);
-    cube->get_transformation().translate(0.0f, 0.5f, 0.0f);
-    cube->get_transformation().scale(0.1, 0.1, 0.1);
-    m_objects.push_back(cube);
-    */
-
-    // load rock from Wavefront file
-    auto statue = FileSceneObject::LoadFromObjFile("milo.obj", global_shader, Material::create_white_marble());
+    // load statue from Wavefront file
+    auto statue = FileSceneObject::LoadFromObjFile("milo.obj", global_shader, Material::create_default());
+    statue->get_transformation().translate(0., 0., -2);
     statue->get_transformation().rotate_x_deg(-90);
-    statue->get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
+    statue->get_transformation().scale(1.0f / 300, 1.0f / 300, 1.0f / 300);
     m_objects.push_back(statue);
 
-    /*
-    // load statue from Wavefront file    
-    auto statue = FileSceneObject::LoadFromObjFile("statue.obj", global_shader, Material::create_white_marble());
-    statue->get_transformation().scale(1.0f / 200, 1.0f / 200, 1.0f / 200);
-    m_objects.push_back(statue);
-    */
+    
+
+    // load colums around the arch from Wavefront file
+    auto column1 = FileSceneObject::LoadFromObjFile("Column.obj", global_shader, Material::create_dark_grey_rock());
+    column1->get_transformation().translate(-0.8, 0., -1);
+    column1->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    m_objects.push_back(column1);
+    auto column2 = FileSceneObject::LoadFromObjFile("Column.obj", global_shader, Material::create_dark_grey_rock());
+    column2->get_transformation().translate(+0.8, 0., -1);
+    column2->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    m_objects.push_back(column2);
+
+    // load entry arch from Wavefront file
+    auto arch = FileSceneObject::LoadFromObjFile("Arch.obj", global_shader, Material::create_yellow_rock());
+    arch->get_transformation().translate(0., 0., -1);
+    arch->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    m_objects.push_back(arch);
+
+    
+    // load entry arch from Wavefront file
+    auto flashlight = FileSceneObject::LoadFromObjFile("Linterna.obj", global_shader, Material::create_yellow_rock());
+    flashlight->get_transformation().translate(0., 0.5, 0.0);
+    flashlight->get_transformation().rotate_x_deg(-90);
+    flashlight->get_transformation().scale(1.0f / 100, 1.0f / 100, 1.0f / 100);
+    m_objects.push_back(flashlight);
 }
 
 void Scene::draw()
@@ -185,11 +198,16 @@ void Scene::draw()
     double currentTime = glfwGetTime();
     m_deltaTime = currentTime - m_lastFrameTime;
     m_lastFrameTime = currentTime;
+    
+    // create the shadow map if enabled
+    if (m_enable_shadow)
+    {
+        
+    }
 
+    // render all scene objects
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    // render all scene objects
     for (SceneObject* obj : m_objects)
     {
         m_lights.set_uniforms(obj->get_shader()); // update light uniforms

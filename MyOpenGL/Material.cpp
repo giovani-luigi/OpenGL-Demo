@@ -30,6 +30,16 @@ void Material::use(Shader& shader)
     }
 }
 
+Material Material::create_default()
+{
+    return Material(
+        glm::vec3(0.2f, 0.2f, 0.2f),
+        glm::vec3(0.5f, 0.5f, 0.5f),
+        glm::vec3(0.5f, 0.5f, 0.5f),
+        4
+    );
+}
+
 Material Material::create_white_marble()
 {
     return Material(
@@ -47,6 +57,36 @@ Material Material::create_brown_floor()
         glm::vec3(0.2f, 0.12f, 0.1f),
         glm::vec3(0.1f, 0.1f, 0.1f),
         0
+    );
+}
+
+Material Material::create_night_floor()
+{
+    return Material(
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3(0.07f, 0.07f, 0.07f),
+        glm::vec3(0.05f, 0.07f, 0.10f),
+        0
+    );
+}
+
+Material Material::create_dark_grey_rock()
+{
+    return Material(
+        glm::vec3(0.1f, 0.1f, 0.1f),
+        glm::vec3(0.2f, 0.2f, 0.2f),
+        glm::vec3(0.1f, 0.1f, 0.1f),
+        0
+    );
+}
+
+Material Material::create_yellow_rock()
+{
+    return Material(
+        glm::vec3(0.12f, 0.11f, 0.1f),
+        glm::vec3(0.6f, 0.5f, 0.4f),
+        glm::vec3(0.2f, 0.2f, 0.15f),
+        4
     );
 }
 

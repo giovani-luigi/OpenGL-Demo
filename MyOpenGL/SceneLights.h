@@ -8,12 +8,24 @@ class SceneLights {
 public:
 
     // factory methods
-    static SceneLights create_default(const Camera& camera) {
+    static SceneLights create_default(const Camera& camera)
+    {
         return SceneLights(camera,
-            glm::vec3(0.0f, 0.5f, 0.5f),
+            glm::vec3(0.0f, 0.0f, 0.0f),
             glm::vec3(0.17f, 0.15f, 0.12f),
             glm::vec3(0.5f, 0.5f, 0.5f),
             glm::vec3(0.5f, 0.5f, 0.5f)
+        );
+    }
+
+    static SceneLights create_night(const Camera& camera)
+    {
+        // creates a light, somewhere near the moon's position
+        return SceneLights(camera,
+            glm::vec3(-5.0f, 5.0f, 5.0f),
+            glm::vec3(0.5f, 0.5f, 0.5f),
+            glm::vec3(0.52f, 0.45f, 0.6f),
+            glm::vec3(0.3f, 0.3f, 0.45f)
         );
     }
 

@@ -69,6 +69,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneShadows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scene.h">
@@ -983,6 +986,9 @@
     <ClInclude Include="STB\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SceneShadows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="Models\Statue.obj">
@@ -991,7 +997,6 @@
     <CopyFileToFolders Include="Shaders\default.vertex.shader">
       <Filter>Shaders</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="Shaders\light.fragment.shader" />
     <CopyFileToFolders Include="Shaders\global.fragment.shader">
       <Filter>Shaders</Filter>
     </CopyFileToFolders>
@@ -1018,6 +1023,11 @@
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
     <CopyFileToFolders Include="Images\skybox1\TopImage.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Arch.obj" />
+    <CopyFileToFolders Include="Models\Arch.mtl" />
+    <CopyFileToFolders Include="Models\Linterna_COLOR.jpg">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
   </ItemGroup>
@@ -1430,5 +1440,19 @@
     <None Include="GLM\gtx\wrap.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Models\Column.mtl" />
+    <None Include="Models\Column2.mtl" />
+    <None Include="Models\Pedestal.mtl" />
+    <None Include="Models\Pedestal2.mtl" />
+    <None Include="Shaders\shadow.fragment.shader" />
+    <None Include="Shaders\shadow.vertex.shader" />
+    <None Include="Models\Linterna.mtl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Models\Column.obj" />
+    <Object Include="Models\Column2.obj" />
+    <Object Include="Models\Pedestal.obj" />
+    <Object Include="Models\Pedestal2.obj" />
+    <Object Include="Models\Linterna.obj" />
   </ItemGroup>
 </Project>
