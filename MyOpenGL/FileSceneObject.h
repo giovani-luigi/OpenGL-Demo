@@ -79,7 +79,6 @@ public:
             if (!attrib.texcoords.empty())
             {
                 material = Material::create_texture(
-                    f_texts,
                     "Models\\" + materials[0].diffuse_texname,
                     material.get_ambient_component(),
                     material.get_diffuse_component(),
@@ -88,7 +87,9 @@ public:
             }            
         }
 
-        return new FileSceneObject(f_verts, f_norms, shader, material);
+        auto obj = new FileSceneObject(f_verts, f_norms, shader, material);
+        obj->set_texture_coordinates(f_texts);
+        return obj;
     }
 
 private:

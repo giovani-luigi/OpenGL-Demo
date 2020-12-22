@@ -70,8 +70,8 @@ void SkyBoxSceneObject::draw(const Camera& camera, const glm::mat4& projection, 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_skybox_texture_id);
 
-    glBindVertexArray(m_vao);
-    glDrawArrays(GL_TRIANGLES, 0, (m_vertices.size() / 3));
+    glBindVertexArray(get_vao());
+    glDrawArrays(GL_TRIANGLES, 0, (get_vertices().size() / 3));
 
     // 4. draw the pixels if the incoming depth value is less than the stored depth value
     glDepthFunc(GL_LESS);

@@ -11,7 +11,7 @@ SceneObject::SceneObject(
     Material material
 ) :
     FollowsCamera(false), m_vao(0), m_tvbo(0),
-    m_material(material), m_shader(shader), m_texture(),
+    m_material(material), m_shader(shader),
     m_vertices(vertices), m_normals(normals)
 {
     // create the VBO and assign the VAO
@@ -32,21 +32,8 @@ SceneObject::SceneObject(
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr); // setup the layout of the buffer for positions
     glEnableVertexAttribArray(1); // enable the attribute
 
-    if (material.has_texture())
-    {
-        m_texels = material.get_texture_coordinates();
+    glDisableVertexAttribArray(2); // disable the texture coordinate attribute    
 
-        // create vertex buffer object for attribute: texture
-        glGenBuffers(1, &m_tvbo); // create 1 buffer
-        glBindBuffer(GL_ARRAY_BUFFER, m_tvbo);
-        glBufferData(GL_ARRAY_BUFFER, m_texels.size() * sizeof(float), &m_texels[0], GL_STATIC_DRAW);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr); // setup the layout of the buffer for positions
-        glEnableVertexAttribArray(2); // enable the attribute       
-    }
-    else
-    {
-        glDisableVertexAttribArray(2); // disable the texture coordinate attribute    
-    }
 }
 
 void SceneObject::draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
@@ -77,6 +64,26 @@ void SceneObject::draw(const Camera& camera, const glm::mat4& projection, const 
     // activate material
     m_material.use(m_shader);
 
+    // inform shader if has texture
+    m_shader.setBool("u_material.has_texture", has_texture());
+
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, (m_vertices.size() / 3));
+}
+
+void SceneObject::set_texture_coordinates(std::vector<float>& coordinates)
+{
+    m_texcoordinates = coordinates;
+
+    if (!m_texcoordinates.empty())
+    {
+        glBindVertexArray(m_vao);
+
+        // create vertex buffer object for attribute: texture
+        glGenBuffers(1, &m_tvbo); // create 1 buffer
+        glBindBuffer(GL_ARRAY_BUFFER, m_tvbo);
+        glBufferData(GL_ARRAY_BUFFER, m_texcoordinates.size() * sizeof(float), &m_texcoordinates[0], GL_STATIC_DRAW);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr); // setup the layout of the buffer for positions
+        glEnableVertexAttribArray(2); // enable the attribute
+    }
 }

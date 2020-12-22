@@ -139,7 +139,7 @@ void Scene::setup()
     auto light_shader = create_light_shader();
         
     // 5. load and add objects
-
+    
     // add ground
     m_objects.push_back(new FloorSceneObject(global_shader));
 
@@ -153,7 +153,7 @@ void Scene::setup()
     "FrontImage.png",
     "BackImage.png"
     ));
-
+    
     // load statue from Wavefront file
     auto statue = FileSceneObject::LoadFromObjFile("milo.obj", global_shader, Material::create_default());
     statue->get_transformation().translate(0., 0., -2);
@@ -191,8 +191,6 @@ void Scene::setup()
     flashlight->get_transformation().scale(1.0f / 100, 1.0f / 100, 1.0f / 100);
     flashlight->FollowsCamera = true;
     m_objects.push_back(flashlight);
-
-
 
 }
 

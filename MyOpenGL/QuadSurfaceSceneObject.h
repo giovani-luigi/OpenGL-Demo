@@ -4,12 +4,22 @@
 class QuadSurfaceSceneObject : public SceneObject
 {
 public:
-
-    explicit QuadSurfaceSceneObject(const std::vector<glm::vec3>& corners, SceneObjectType type, Shader shader, Material material) :
-        SceneObject(generate_vertices(corners), generate_normals(corners), type, shader, material)
+    /*
+    std::vector<float> generate_texture_coordinates(const vector<float>& vertices)
     {
+        // create two triangles based on the corners
+        return std::vector<float>{
+            // first, upper right triangle
+            corners[0].x, corners[0].y,
+            corners[1].x, corners[1].y,
+            corners[2].x, corners[2].y,
+            // second, bottom left triangle
+            corners[2].x, corners[2].y,
+            corners[3].x, corners[3].y,
+            corners[0].x, corners[0].y,
+        };
     }
-
+    */
     static std::vector<float> generate_vertices(const std::vector<glm::vec3>& corners)
     {
         // create two triangles based on the corners
@@ -45,5 +55,10 @@ public:
             normal.x, normal.y, normal.z,
             normal.x, normal.y, normal.z,
         };
+    }
+
+    explicit QuadSurfaceSceneObject(const std::vector<glm::vec3>& corners, SceneObjectType type, Shader shader, Material material) :
+        SceneObject(generate_vertices(corners), generate_normals(corners), type, shader, material)
+    {
     }
 };

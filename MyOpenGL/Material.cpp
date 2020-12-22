@@ -19,15 +19,7 @@ void Material::use(Shader& shader)
         
     shader.setInt("u_material.texture_unit", 0);
 
-    if (has_texture())
-    {
-        shader.setBool("u_material.has_texture", true);
-        m_texture.use();
-    }
-    else
-    {
-        shader.setBool("u_material.has_texture", false);
-    }
+    m_texture.use();
 }
 
 Material Material::create_default()
@@ -101,7 +93,6 @@ Material Material::create_yellow_rock()
 }
 
 Material Material::create_texture(
-    const vector<float>& coordinates, 
     const std::string& imagePath, 
     const glm::vec3& ambient, 
     const glm::vec3& diffuse, 
@@ -110,6 +101,5 @@ Material Material::create_texture(
 {
     auto m = Material(specular, diffuse, ambient, shininess);
     m.m_texture = Texture(imagePath, true);
-    m.m_texcoordinates = coordinates;
     return m;
 }

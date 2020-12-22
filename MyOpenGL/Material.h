@@ -20,7 +20,6 @@ public:
     static Material create_yellow_rock();
 
     static Material create_texture(
-        const vector<float>& coordinates, 
         const std::string& imagePath, 
         const glm::vec3& ambient, 
         const glm::vec3& diffuse,
@@ -35,8 +34,6 @@ public:
 
     // methods
     void use(Shader& shader);
-    bool has_texture() const { return !m_texcoordinates.empty(); }
-    const std::vector<float>& get_texture_coordinates() const { return m_texcoordinates; }
 
 private:
 
@@ -46,7 +43,6 @@ private:
     glm::vec3 m_ambient;
     float m_shininess;
 
-    std::vector<float> m_texcoordinates;
     Texture m_texture;
 
     // constructors
