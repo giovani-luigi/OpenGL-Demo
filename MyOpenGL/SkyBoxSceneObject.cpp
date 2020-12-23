@@ -4,13 +4,13 @@
 #include "STB/stb_image.h"
 
 SkyBoxSceneObject::SkyBoxSceneObject(
-    const string& directoryPath,
-    const string& posXFilename,
-    const string& negXFilename,
-    const string& posYFilename,
-    const string& negYFilename,
-    const string& posZFilename,
-    const string& negZFilename) :
+    const std::string& directoryPath,
+    const std::string& posXFilename,
+    const std::string& negXFilename,
+    const std::string& posYFilename,
+    const std::string& negYFilename,
+    const std::string& posZFilename,
+    const std::string& negZFilename) :
     CubeSceneObject(Shader("skybox.vertex.shader", "skybox.fragment.shader")),
     m_skybox_texture_id(0)
 {

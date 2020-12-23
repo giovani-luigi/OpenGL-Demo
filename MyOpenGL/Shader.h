@@ -7,9 +7,6 @@
 #include <sstream>
 #include <iostream>
 
-#include "Matrix4x4.h"
-#include "Vector3.h"
-#include "Vector4.h"
 #include "GLM/ext/matrix_float4x4.hpp"
 
 class Shader
@@ -61,7 +58,7 @@ public:
     }
 
     // ------------------------------------------------------------------------
-    void setVec4(const std::string& name, const Vector4& value) const
+    void setVec4(const std::string& name, const glm::vec4& value) const
     {
         glUniform4fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
     }
@@ -72,11 +69,6 @@ public:
     }
 
     // ------------------------------------------------------------------------
-    void setMat4(const std::string& name, const Matrix4x4& mat) const
-    {
-        glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_TRUE, mat.get_array());
-    }
-
     void setMat4(const std::string& name, const glm::mat4& mat) const
     {
         glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);

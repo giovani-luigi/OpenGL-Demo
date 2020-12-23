@@ -4,7 +4,7 @@ constexpr auto GRID_TILE_SIZE = 10; // you want this to be greater or equal than
 
 std::vector<glm::vec3> FloorSceneObject::create_corners(float size)
 {
-    return vector<glm::vec3>{
+    return std::vector<glm::vec3>{
         glm::vec3(-size/2.0f, 0, +size/2.0f),
         glm::vec3(+size/2.0f, 0, +size/2.0f),
         glm::vec3(+size/2.0f, 0, -size/2.0f),

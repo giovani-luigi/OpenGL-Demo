@@ -24,15 +24,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix4x4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Transform3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -77,15 +68,6 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix4x4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Transform3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,9 +81,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Projection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">

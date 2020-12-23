@@ -6,13 +6,13 @@ class SkyBoxSceneObject : public CubeSceneObject {
 public:
 
     SkyBoxSceneObject(
-        const string& directoryPath, 
-        const string& posXFilename, 
-        const string& negXFilename, 
-        const string& posYFilename,
-        const string& negYFilename, 
-        const string& posZFilename, 
-        const string& negZFilename);
+        const std::string& directoryPath, 
+        const std::string& posXFilename, 
+        const std::string& negXFilename, 
+        const std::string& posYFilename,
+        const std::string& negYFilename, 
+        const std::string& posZFilename, 
+        const std::string& negZFilename);
 
     void configure(const Camera& camera, const glm::mat4& projection, const SceneLights& lights) override;
     void draw() override;
