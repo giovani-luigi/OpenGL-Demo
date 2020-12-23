@@ -21,7 +21,7 @@ FloorSceneObject::FloorSceneObject(Shader shader) :
         Material::create_night_floor()), m_row(0), m_col(0), m_camera(nullptr), m_projection(nullptr), m_lights(nullptr)
 {
     
-    m_material = Material::create_texture("Models\\Floor.jpg", Material::create_default());
+    m_material = Material::create_texture("Images\\Floor.jpg", Material::create_default());
     auto f_texts = std::vector<float>{
         QuadSurfaceSceneObject::generate_texture_coordinates()
     };

@@ -1024,9 +1024,6 @@
     <CopyFileToFolders Include="Models\Linterna_COLOR.jpg">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="Models\Floor.jpg">
-      <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
     <CopyFileToFolders Include="Models\Column.mtl" />
     <CopyFileToFolders Include="Models\Column2.mtl" />
     <CopyFileToFolders Include="Models\Pedestal.mtl" />
@@ -1045,6 +1042,9 @@
     </CopyFileToFolders>
     <CopyFileToFolders Include="Shaders\shadow.vertex.shader" />
     <CopyFileToFolders Include="Shaders\shadow.fragment.shader" />
+    <CopyFileToFolders Include="Images\Floor.jpg">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <None Include="GLM\detail\func_common.inl">
