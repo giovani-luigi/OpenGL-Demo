@@ -159,7 +159,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="SkyBoxSceneObject.cpp" />
-    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform3D.cpp" />
     <ClCompile Include="Vector3.cpp" />
