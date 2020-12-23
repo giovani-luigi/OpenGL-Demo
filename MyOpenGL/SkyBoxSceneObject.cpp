@@ -49,7 +49,7 @@ SkyBoxSceneObject::SkyBoxSceneObject(
     }
 }
 
-void SkyBoxSceneObject::draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
+void SkyBoxSceneObject::configure(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
 {
     // 1. use special shader for the skybox
     m_shader.use();
@@ -63,15 +63,17 @@ void SkyBoxSceneObject::draw(const Camera& camera, const glm::mat4& projection, 
     m_shader.setMat4("u_model", m_transformation.get_matrix());
 
     m_shader.setInt("u_texture", 0); // set texture unit to 0
+}
 
+void SkyBoxSceneObject::draw()
+{
     // 3. draw the pixels if the incoming depth value is less than or equal to the stored depth value.
-    glDepthFunc(GL_LEQUAL); 
+    glDepthFunc(GL_LEQUAL);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_skybox_texture_id);
 
-    glBindVertexArray(get_vao());
-    glDrawArrays(GL_TRIANGLES, 0, (get_vertices().size() / 3));
+    SceneObject::draw();
 
     // 4. draw the pixels if the incoming depth value is less than the stored depth value
     glDepthFunc(GL_LESS);
@@ -82,5 +84,4 @@ void SkyBoxSceneObject::draw(const Camera& camera, const glm::mat4& projection, 
      any other object in the scene. Line 7 renders the skybox as usual. The depth condition is then set
      to the default condition of _GLLESS, which allows objects to be render in front of any other in the scene (section 4).
      */
-
 }

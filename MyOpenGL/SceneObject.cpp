@@ -36,37 +36,41 @@ SceneObject::SceneObject(
 
 }
 
-void SceneObject::draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
+void SceneObject::configure(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
 {
     // use specified shader for this object
     m_shader.use();
+
+    // set light parameters
+    lights.set_uniforms(m_shader);
 
     // update uniforms for vertex shader
     m_shader.setMat4("u_view", camera.get_matrix());
     m_shader.setMat4("u_proj", projection); // projection matrix
 
-    if (FollowsCamera)
-    {
+    if (FollowsCamera) {
         // counter act camera's transformations
         const auto cp = camera.get_position();
         m_shader.setMat4("u_model", Transform3D()
             .translate(cp.x, cp.y, cp.z)
-            .rotate_y_deg((camera.get_yaw_deg()+90)*-1 ) // camera's initial YAW is -90 deg.
+            .rotate_y_deg((camera.get_yaw_deg() + 90) * -1) // camera's initial YAW is -90 deg.
             .rotate_x_deg(camera.get_pitch_deg())
             .combine(m_transformation)
-            .get_matrix());            
+            .get_matrix());
     }
-    else
-    {
-        m_shader.setMat4("u_model", m_transformation.get_matrix());        
+    else {
+        m_shader.setMat4("u_model", m_transformation.get_matrix());
     }
 
     // activate material
     m_material.use(m_shader);
 
     // inform shader if has texture
-    m_shader.setBool("u_material.has_texture", has_texture());
+    m_shader.setBool("u_material.has_texture", has_texture());    
+}
 
+void SceneObject::draw()
+{
     glBindVertexArray(m_vao);
     glDrawArrays(GL_TRIANGLES, 0, (m_vertices.size() / 3));
 }

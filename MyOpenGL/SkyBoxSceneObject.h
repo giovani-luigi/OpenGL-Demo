@@ -14,7 +14,8 @@ public:
         const string& posZFilename, 
         const string& negZFilename);
 
-    void draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights) override;
+    void configure(const Camera& camera, const glm::mat4& projection, const SceneLights& lights) override;
+    void draw() override;
     
 private:
 

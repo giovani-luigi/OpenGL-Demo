@@ -21,9 +21,9 @@ public:
     SceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, SceneObjectType type, Shader shader, Material material);
     virtual ~SceneObject() = default;
 
-    virtual void draw(const Camera& camera, const glm::mat4& projection, const SceneLights& lights);
-
-    
+    virtual void configure(const Camera& camera, const glm::mat4& projection, const SceneLights& lights);
+    virtual void draw();
+        
     void set_texture_coordinates(std::vector<float>& coordinates);
     bool has_texture() const { return !m_texcoordinates.empty(); }
     Transform3D& get_transformation() { return m_transformation; }

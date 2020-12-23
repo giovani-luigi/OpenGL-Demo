@@ -2,7 +2,7 @@
 #include "SkyBoxSceneObject.h"
 
 Scene::Scene(GLFWwindow* window) :
-    m_window(window), m_camera(*this), m_lights(SceneLights::create_night(m_camera)),
+    m_window(window), m_camera(*this), m_lights(SceneLights::create_night(m_camera)), m_shadows(m_lights),
     m_projection(), m_lastFrameTime(0), m_mouse_x(0), m_mouse_y(0), m_mouse_first(true),
     m_frame(0), m_enable_shadow(false)
 {
@@ -24,6 +24,12 @@ void Scene::run()
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(m_window))
     {
+        m_frame++;
+
+        double currentTime = glfwGetTime();
+        m_deltaTime = currentTime - m_lastFrameTime;
+        m_lastFrameTime = currentTime;
+
         draw();
 
         /* Swap front and back buffers */
@@ -113,24 +119,14 @@ void Scene::process_mouse_button(int button, int action, int modifiers)
 void Scene::process_viewport_resize(int width, int height)
 {
     // update projection's aspect ratio
-    setup_projection();
+    m_projection = create_projection();
 }
 
-Shader Scene::create_global_shader()
-{
-    return Shader("default.vertex.shader", "global.fragment.shader");
-}
-
-Shader Scene::create_light_shader()
-{
-    return Shader("default.vertex.shader", "light.fragment.shader");
-}
-
-void Scene::setup_projection()
+glm::mat4 Scene::create_projection() const
 {
     int width, height;
     glfwGetWindowSize(m_window, &width, &height);
-    m_projection = glm::perspective(MathUtils::deg_to_rad(67.0f), (float)width / height, 0.1f, 10.0f);
+    return glm::perspective(MathUtils::deg_to_rad(67.0f), (float)width / height, 0.1f, 10.0f);
 }
 
 void Scene::setup()
@@ -142,12 +138,11 @@ void Scene::setup()
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // 3. initialize shader parameters, such as camera and projections    
-    setup_projection();
+    m_projection = create_projection();
     m_camera.set_position(glm::vec3(0., 0.5, 0.0));
 
     // 4. create shaders to be used for the objects in the scene
-    auto global_shader = create_global_shader();
-    auto light_shader = create_light_shader();
+    auto global_shader = Shader("scene.vertex.shader", "scene.fragment.shader");
         
     // 5. load and add objects
     
@@ -207,16 +202,10 @@ void Scene::setup()
 
 void Scene::draw()
 {
-    m_frame++;
-
-    double currentTime = glfwGetTime();
-    m_deltaTime = currentTime - m_lastFrameTime;
-    m_lastFrameTime = currentTime;
-    
     // create the shadow map if enabled
     if (m_enable_shadow)
     {
-        
+        m_shadows.compute(m_objects);
     }
 
     // render all scene objects
@@ -224,7 +213,8 @@ void Scene::draw()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for (SceneObject* obj : m_objects)
     {
-        m_lights.set_uniforms(obj->get_shader()); // update light uniforms
-        obj->draw(m_camera, m_projection, m_lights); // this will respect the polymorphism since we are using pointer
+        // these calls will respect the polymorphism since we are using pointer
+        obj->configure(m_camera, m_projection, m_lights);
+        obj->draw(); 
     }
 }
