@@ -16,9 +16,9 @@ The camera is controlled in first person, and a flashlight can be toggled on/off
 - "Infinite" floor Quad, so you can walk forever
 - Skybox with night sky and with the moon 
 - Main light (point light) to mimic the moon's light (no decay over distance)
+- A flashlight held in first person, with ON/OFF switch (mouse click to toggle a spot light)
 
 ## TODO
-- A flashlight held in first person, with ON/OFF switch (mouse click to toggle a spot light)
 - Shadows support
 - Simple collision detection
 - Add texture to the floor
