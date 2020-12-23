@@ -1,6 +1,6 @@
 #include "FloorSceneObject.h"
 
-#define FLOOR_SIZE 10 // you want this to be greater or equal than zFar of the perspective projection
+constexpr auto FLOOR_SIZE = 10; // you want this to be greater or equal than zFar of the perspective projection;
 
 std::vector<glm::vec3> FloorSceneObject::create_corners(float size)
 {

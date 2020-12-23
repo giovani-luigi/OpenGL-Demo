@@ -86,7 +86,7 @@ Material Material::create_yellow_rock()
 {
     return Material(
         glm::vec3(0.12f, 0.11f, 0.1f),
-        glm::vec3(0.6f, 0.5f, 0.4f),
+        glm::vec3(0.6f, 0.56f, 0.42f),
         glm::vec3(0.2f, 0.2f, 0.15f),
         4
     );

@@ -48,21 +48,53 @@ public:
 
     // methods
     void set_uniforms(Shader& shader) const {
-        const auto l_pos = m_camera.get_matrix() * glm::vec4(position, 1.0); // put light in view space
-        shader.use();
-        shader.setVec3("u_light.position", l_pos.x, l_pos.y, l_pos.z); // light position in view space
-        shader.setVec3("u_light.specular", specular.r, specular.g, specular.b); // light specular emission
-        shader.setVec3("u_light.diffuse", diffuse.r, diffuse.g, diffuse.b); // light diffuse emission
-        shader.setVec3("u_light.ambient", ambient.r, ambient.g, ambient.b); // light ambient emission
 
+        shader.use();
+
+        // main point light (moon)
+
+        const auto l_pos = m_camera.get_matrix() * glm::vec4(position, 1.0); // put light in view space
+
+        shader.setVec3("u_light.position", l_pos); // light position in view space
+        shader.setVec3("u_light.specular", specular); // light specular emission
+        shader.setVec3("u_light.diffuse", diffuse); // light diffuse emission
+        shader.setVec3("u_light.ambient", ambient); // light ambient emission
         shader.setFloat("u_light.decayConstant", decay_constant); // light decay constant coefficient
         shader.setFloat("u_light.decayLinear", decay_linear); // light decay linear coefficient
         shader.setFloat("u_light.decayQuadratic", decay_quadratic); // light decay quadratic coefficient
+
+        // flashlight
+
+        // the flashlight's position is the same as camera's position for simplicity
+        // notice that we need to put camera's position into view space because of rotations
+        // also, the normal vector, needs to be placed in the view space, however NOTICE the
+        // value of the 'w' component of the vec4 multiplication.
+
+        const auto fl_pos = m_camera.get_matrix() * glm::vec4(m_camera.get_position(), 1.0f); // <<= w is One
+        const auto fl_dir = m_camera.get_matrix() * glm::vec4(m_camera.get_front_direction(), 0.0f); // <<= w is Zero
+        
+        shader.setVec3("u_flashlight.position", fl_pos); // light position in view space
+        shader.setVec3("u_flashlight.direction", fl_dir); 
+        shader.setFloat("u_flashlight.decayConstant", 1.0f); // light decay constant coefficient
+        shader.setFloat("u_flashlight.decayLinear", 0.5f); // light decay linear coefficient
+        shader.setFloat("u_flashlight.decayQuadratic", 0.2f); // light decay quadratic coefficient
+        shader.setFloat("u_flashlight.cutOff", glm::cos(glm::radians(12.0f))); // angle cossine where light starts to fade-out from the center of the cone
+        shader.setFloat("u_flashlight.outerCutOff", glm::cos(glm::radians(15.0f))); // outer angle's cossine, so it makes a smooth transition
+        shader.setVec3("u_flashlight.specular", glm::vec3(1.0f, 1.0f, 1.0f)); // light specular emission
+        shader.setVec3("u_flashlight.diffuse", glm::vec3(0.3f, 0.32f, 0.26f)); // light diffuse emission
+        shader.setVec3("u_flashlight.ambient", glm::vec3(0.5f, 0.5f, 0.5f)); // light ambient emission
+
+        shader.setFloat("u_flashlight.brightness", m_flashlight_brightness); // the brightness (ON/OFF/dim...)
+
     }
+        
+    void toggle_flashlight() { m_flashlight_brightness = m_flashlight_brightness == 0.0f ? 1.0f : 0.0f; }
 
 private:
 
     const Camera& m_camera;
+
+    float m_flashlight_brightness;
 
     // constructor
     SceneLights(
@@ -82,7 +114,8 @@ private:
         decay_constant(decayConstant),
         decay_linear(decayLinear),
         decay_quadratic(decayQuadratic),
-        m_camera(camera)
+        m_camera(camera),
+        m_flashlight_brightness(0.0f)
     {
     }
 };

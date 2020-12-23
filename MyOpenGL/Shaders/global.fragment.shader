@@ -20,9 +20,17 @@ struct PointLight {
 };
 
 struct SpotLight {
-    vec3 position;      // position must be in view space
+    float decayConstant;    // decay constant coefficient 
+    float decayLinear;      // decay linear coefficient 
+    float decayQuadratic;   // decay quadratic coefficient 
+    vec3 position;          // position must be in view space
     vec3 direction;
-    float aperture;
+    float cutOff;           // first stage where light starts to fade-out
+    float outerCutOff;      // gives a buffer around the cut-off for a smooth transition
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float brightness;       // global gain 0.0-1.0
 };
 
 in vec3 frag_pos;                 // position in view space
@@ -30,17 +38,19 @@ in vec3 frag_norm;                // normal in view space
 in vec2 frag_text;                // texture coordinates
 
 uniform mat4 u_view;              // view matrix (camera)
+uniform vec3 u_camPos;            // view (camera's) position
 uniform Material u_material;      // material reflection parameters
 uniform PointLight u_light;       // point light emission parameters
 uniform SpotLight u_flashlight;   // spot light emission parameters
 
-
 out vec4 frag_color;
 
 // calculates the color when using a point light.
-vec3 point_light(PointLight light, Material material) 
+vec3 point_light(PointLight light, Material material, vec3 view_dir)
 {
+    // calculate a vector coming from the fragment, going to the light
     vec3 light_vector = light.position - frag_pos;
+    vec3 light_direction = normalize(light_vector);
 
     // calculate attenuation of the light over the distance
     float distance = length(light_vector); // get the length of the vector from fragment to light position
@@ -53,9 +63,7 @@ vec3 point_light(PointLight light, Material material)
     // 2. diffuse component
     //      independent from camera's position, basically is the light reflected from the light source
     //      depending on the fragment surface's angle with the light source.
-
-    // calculate a vector coming from the fragment, going to the light
-    vec3 light_direction = normalize(light_vector);
+    
     // calculate the angle between the fragments normal, and the vector from the fragment to the light source.
     // the smaller the angle, the more orthogonal the fragment is to the light, then, the more light is reflected.
     float cos_diffuse = dot(frag_norm, light_direction); // we need the cosine directly...
@@ -85,8 +93,8 @@ vec3 point_light(PointLight light, Material material)
         specular_component = light.specular * material.specular * specular_coefficient;
     }    
     
-    if (u_material.has_texture) {
-        vec3 text_color = vec3(texture(u_material.texture_unit, frag_text));
+    if (material.has_texture) {
+        vec3 text_color = vec3(texture(material.texture_unit, frag_text));
         ambient_component *= text_color;
         diffuse_component *= text_color;
         specular_component *= text_color;
@@ -101,12 +109,44 @@ vec3 point_light(PointLight light, Material material)
     
 }
 
-vec3 spot_light(SpotLight light, Material material) 
+vec3 spot_light(SpotLight light, Material material, vec3 cam_dir)
 {
-    return vec3(0.0, 0.0, 0.0);
+    vec3 light_vector = light.position - frag_pos;
+    vec3 light_direction = normalize(light_vector);
+    
+    // diffuse shading
+    float diff = max(dot(frag_norm, light_direction), 0.0);
+    
+    // specular shading
+    vec3 reflected_light = reflect(-light_direction, frag_norm);
+    float spec = pow(max(dot(cam_dir, reflected_light), 0.0), material.shininess);
+    
+    // attenuation
+    float distance = length(light_vector); // get the length of the vector from fragment to light position
+    float decay = 1.0 / (light.decayConstant + (light.decayLinear * distance) + (light.decayQuadratic * (distance * distance)));
+    
+    // spotlight intensity
+    float theta = dot(light_direction, normalize(-light.direction));
+    float epsilon = light.cutOff - light.outerCutOff;
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    
+    vec3 ambient_component = light.ambient * material.ambient * decay * intensity;
+    vec3 diffuse_component = light.diffuse * material.diffuse * diff * decay * intensity;
+    vec3 specular_component = light.specular * material.specular * spec * decay * intensity;
+    
+    if (material.has_texture) {
+        vec3 text_color = vec3(texture(material.texture_unit, frag_text));
+        ambient_component *= text_color;
+        diffuse_component *= text_color;
+        specular_component *= text_color;
+    }
+    
+    return (ambient_component + diffuse_component + specular_component) * light.brightness;
+
 }
 
 void main () 
 {
-    frag_color = vec4(point_light(u_light, u_material) + spot_light(u_flashlight, u_material), 1.0);   
+    vec3 cam_dir = normalize(u_camPos - frag_pos);
+    frag_color = vec4(point_light(u_light, u_material, cam_dir) + spot_light(u_flashlight, u_material, cam_dir), 1.0);
 }

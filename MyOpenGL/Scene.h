@@ -24,6 +24,7 @@ public:
     void run();
     void process_key(int keyCode, int scanCode, int action, int modifiers);
     void process_cursor(float xpos, float ypos);
+    void process_mouse_button(int button, int action, int modifiers);
     void process_viewport_resize(int width, int height);
 
 private:

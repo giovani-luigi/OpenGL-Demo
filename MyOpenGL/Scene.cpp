@@ -99,6 +99,17 @@ void Scene::process_cursor(float xpos, float ypos)
     m_camera.pitch(deltaY * m_mouse_sensitivity * -1);
 }
 
+void Scene::process_mouse_button(int button, int action, int modifiers)
+{
+    if (action == GLFW_RELEASE)
+    {
+        if (button == GLFW_MOUSE_BUTTON_LEFT)
+        {
+            m_lights.toggle_flashlight();
+        }
+    }
+}
+
 void Scene::process_viewport_resize(int width, int height)
 {
     // update projection's aspect ratio

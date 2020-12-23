@@ -39,6 +39,12 @@ void onKeyInput(GLFWwindow* window, int keyCode, int scanCode, int action, int m
     g_scene->process_key(keyCode, scanCode, action, modifiers);	
 }
 
+void onMouseButton(GLFWwindow* window, int button, int action, int modifiers)
+{
+    if (g_scene == nullptr) return; // scene not initialized yet
+    g_scene->process_mouse_button(button, action, modifiers);
+}
+
 // initialize all libraries and setup the window object
 GLFWwindow * setupWindow() {
 
@@ -62,6 +68,7 @@ GLFWwindow * setupWindow() {
 	
     glfwSetKeyCallback(window, onKeyInput);
     glfwSetCursorPosCallback(window, onCursorPosition);
+    glfwSetMouseButtonCallback(window, onMouseButton);
 	
     /* After creating context, initialize GLEW */
     if (glewInit() != GLEW_OK) {

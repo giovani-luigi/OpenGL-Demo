@@ -116,6 +116,8 @@ public:
 
     glm::vec3 get_displacement_vector(CameraMovement direction, float units, bool clampToGround) const;
 
+    glm::vec3 get_front_direction() const { return m_front; }
+
 
 private:
 
