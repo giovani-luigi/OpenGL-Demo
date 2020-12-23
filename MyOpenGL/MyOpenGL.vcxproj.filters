@@ -997,10 +997,6 @@
     <CopyFileToFolders Include="Models\milo_12328_Statue.jpg">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="Models\milo.obj" />
-    <CopyFileToFolders Include="Models\milo.mtl" />
-    <CopyFileToFolders Include="Shaders\skybox.fragment.shader" />
-    <CopyFileToFolders Include="Shaders\skybox.vertex.shader" />
     <CopyFileToFolders Include="Images\skybox1\BackImage.png">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
@@ -1019,31 +1015,71 @@
     <CopyFileToFolders Include="Images\skybox1\TopImage.png">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="Models\Arch.obj" />
-    <CopyFileToFolders Include="Models\Arch.mtl" />
     <CopyFileToFolders Include="Models\Linterna_COLOR.jpg">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="Models\Column.mtl" />
-    <CopyFileToFolders Include="Models\Column2.mtl" />
-    <CopyFileToFolders Include="Models\Pedestal.mtl" />
-    <CopyFileToFolders Include="Models\Pedestal2.mtl" />
-    <CopyFileToFolders Include="Models\Linterna.mtl" />
-    <CopyFileToFolders Include="Models\Column.obj" />
-    <CopyFileToFolders Include="Models\Column2.obj" />
-    <CopyFileToFolders Include="Models\Pedestal.obj" />
-    <CopyFileToFolders Include="Models\Pedestal2.obj" />
-    <CopyFileToFolders Include="Models\Linterna.obj" />
     <CopyFileToFolders Include="Shaders\scene.vertex.shader">
       <Filter>Shaders</Filter>
     </CopyFileToFolders>
     <CopyFileToFolders Include="Shaders\scene.fragment.shader">
       <Filter>Shaders</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="Shaders\shadow.vertex.shader" />
-    <CopyFileToFolders Include="Shaders\shadow.fragment.shader" />
     <CopyFileToFolders Include="Images\Floor.jpg">
       <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Arch.mtl">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Arch.obj">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Column.mtl">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Column.obj">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Column2.mtl">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Column2.obj">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Linterna.mtl">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Linterna.obj">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\milo.mtl">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\milo.obj">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Pedestal.mtl">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Pedestal.obj">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Pedestal2.mtl">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Pedestal2.obj">
+      <Filter>Models</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Shaders\shadow.fragment.shader">
+      <Filter>Shaders</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Shaders\shadow.vertex.shader">
+      <Filter>Shaders</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Shaders\skybox.fragment.shader">
+      <Filter>Shaders</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="Shaders\skybox.vertex.shader">
+      <Filter>Shaders</Filter>
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
