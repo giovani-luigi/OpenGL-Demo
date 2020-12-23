@@ -142,7 +142,6 @@ vec3 spot_light(SpotLight light, Material material, vec3 cam_dir)
     }
     
     return (ambient_component + diffuse_component + specular_component) * light.brightness;
-
 }
 
 void main () 

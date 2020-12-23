@@ -33,7 +33,8 @@ void onCursorPosition(GLFWwindow* window, double xpos, double ypos)
     g_scene->process_cursor(xpos, ypos);
 }
 
-void onKeyInput(GLFWwindow* window, int keyCode, int scanCode, int action, int modifiers) {
+void onKeyInput(GLFWwindow* window, int keyCode, int scanCode, int action, int modifiers)
+{
     if (g_scene == nullptr) return; // scene not initialized yet
     // forward call to instance
     g_scene->process_key(keyCode, scanCode, action, modifiers);	
