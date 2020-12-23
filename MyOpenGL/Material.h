@@ -26,6 +26,10 @@ public:
         const glm::vec3& specular, 
         float shininess);
 
+    static Material create_texture(
+        const std::string& imagePath, 
+        const Material& baseMaterial);
+
     // getters
     const glm::vec3& get_specular_component() const { return m_specular; }
     const glm::vec3& get_diffuse_component() const { return m_diffuse; }

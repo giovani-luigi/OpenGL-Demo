@@ -1030,6 +1030,9 @@
     <CopyFileToFolders Include="Models\Linterna_COLOR.jpg">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
+    <CopyFileToFolders Include="Models\Floor.jpg">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <None Include="GLM\detail\func_common.inl">

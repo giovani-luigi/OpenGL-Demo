@@ -103,3 +103,10 @@ Material Material::create_texture(
     m.m_texture = Texture(imagePath, true);
     return m;
 }
+
+Material Material::create_texture(const std::string& imagePath, const Material& baseMaterial)
+{
+    auto m = Material(baseMaterial.m_specular, baseMaterial.m_diffuse, baseMaterial.m_ambient, baseMaterial.m_shininess);
+    m.m_texture = Texture(imagePath, true);
+    return m;
+}

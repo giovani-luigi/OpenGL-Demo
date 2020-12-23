@@ -4,22 +4,22 @@
 class QuadSurfaceSceneObject : public SceneObject
 {
 public:
-    /*
-    std::vector<float> generate_texture_coordinates(const vector<float>& vertices)
+
+    static std::vector<float> generate_texture_coordinates()
     {
         // create two triangles based on the corners
         return std::vector<float>{
             // first, upper right triangle
-            corners[0].x, corners[0].y,
-            corners[1].x, corners[1].y,
-            corners[2].x, corners[2].y,
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            1.0f, 0.0f,
             // second, bottom left triangle
-            corners[2].x, corners[2].y,
-            corners[3].x, corners[3].y,
-            corners[0].x, corners[0].y,
+            1.0f, 0.0f,
+            0.0f, 0.0f,
+            0.0f, 1.0f,
         };
     }
-    */
+    
     static std::vector<float> generate_vertices(const std::vector<glm::vec3>& corners)
     {
         // create two triangles based on the corners
