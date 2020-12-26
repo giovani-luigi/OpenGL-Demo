@@ -24,11 +24,12 @@ out vec3 frag_norm;					// output: normal in view's space
 out vec2 frag_text;					// output: texture coordinate
 
 void main() {
-	// apply model and view transformations, but not perspective
+	
+	// 1. transform all vertices
+	gl_Position = u_proj * u_view * u_model * vec4(i_pos.xyz, 1.0f); // WARNING!!! ORDER MATTERS
+
+	// 2. calculate output parameters for light rendering	
 	frag_pos =  vec3(u_view * u_model * vec4(i_pos.xyz, 1.0f));
 	frag_norm = normalize(vec3(u_view * u_model * vec4(i_norm.xyz, 0.0f)));
-	// forward coordinates for texture sampler 
-	frag_text = i_text;
-	// transform all vertices
-	gl_Position = u_proj * u_view * u_model * vec4(i_pos.xyz, 1.0f); // WARNING!!! ORDER MATTERS
+	frag_text = i_text;	 // forward coordinates for texture sampler 
 }

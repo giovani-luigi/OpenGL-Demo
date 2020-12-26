@@ -24,8 +24,7 @@ Scene * g_scene;
 
 void onWindowResize(GLFWwindow * window, int width, int height)
 {
-    glViewport(0, 0, width, height);
-    g_scene->process_viewport_resize(width, height);
+    g_scene->process_window_resize(width, height);
 }
 
 void onCursorPosition(GLFWwindow* window, double xpos, double ypos)

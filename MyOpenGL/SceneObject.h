@@ -33,6 +33,7 @@ public:
     GLuint get_vao() const { return m_vao; }
 
     bool FollowsCamera;
+    bool DrawShadows;
 
 protected:
 

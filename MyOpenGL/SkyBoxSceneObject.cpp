@@ -14,6 +14,8 @@ SkyBoxSceneObject::SkyBoxSceneObject(
     CubeSceneObject(Shader("skybox.vertex.shader", "skybox.fragment.shader")),
     m_skybox_texture_id(0)
 {
+    DrawShadows = false; // exclude from shadow map
+
     m_texture_files.push_back(directoryPath + posXFilename);
     m_texture_files.push_back(directoryPath + negXFilename);
     m_texture_files.push_back(directoryPath + posYFilename);

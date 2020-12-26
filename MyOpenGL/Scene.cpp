@@ -2,9 +2,9 @@
 #include "SkyBoxSceneObject.h"
 
 Scene::Scene(GLFWwindow* window) :
-    m_window(window), m_camera(*this), m_lights(SceneLights::create_night(m_camera)), m_shadows(m_lights),
+    m_window(window), m_camera(*this), m_lights(SceneLights::create_night(m_camera)),
     m_projection(), m_lastFrameTime(0), m_mouse_x(0), m_mouse_y(0), m_mouse_first(true),
-    m_frame(0), m_enable_shadow(false)
+    m_frame(0)
 {
 }
 
@@ -81,8 +81,6 @@ void Scene::process_key(int keyCode, int scanCode, int action, int modifiers)
         {
             m_camera.zoom(-0.25);
         }
-        
-       // Debug::print_debug(m_camera, m_projection);
     }
 }
 
@@ -116,7 +114,7 @@ void Scene::process_mouse_button(int button, int action, int modifiers)
     }
 }
 
-void Scene::process_viewport_resize(int width, int height)
+void Scene::process_window_resize(int width, int height)
 {
     // update projection's aspect ratio
     m_projection = create_projection();
@@ -126,7 +124,7 @@ glm::mat4 Scene::create_projection() const
 {
     int width, height;
     glfwGetWindowSize(m_window, &width, &height);
-    return glm::perspective(MathUtils::deg_to_rad(67.0f), (float)width / height, 0.1f, 10.0f);
+    return glm::perspective(MathUtils::deg_to_rad(67.0f), (float)width / height, PerspectiveZNear, PerspectiveZFar);
 }
 
 void Scene::setup()
@@ -142,12 +140,12 @@ void Scene::setup()
     m_camera.set_position(glm::vec3(0., 0.5, 0.0));
 
     // 4. create shaders to be used for the objects in the scene
-    auto global_shader = Shader("scene.vertex.shader", "scene.fragment.shader");
-        
+    m_sceneShader = Shader("scene.vertex.shader", "scene.fragment.shader");
+
     // 5. load and add objects
     
     // add ground
-    m_objects.push_back(new FloorSceneObject(global_shader));
+    m_objects.push_back(new FloorSceneObject(m_sceneShader));
 
     // add skybox
     m_objects.push_back(new SkyBoxSceneObject(
@@ -161,36 +159,36 @@ void Scene::setup()
     ));
     
     // load statue from Wavefront file
-    auto statue = FileSceneObject::LoadFromObjFile("milo.obj", global_shader, Material::create_default());
+    auto statue = FileSceneObject::LoadFromObjFile("milo.obj", m_sceneShader, Material::create_default());
     statue->get_transformation().translate(0., 0., -2);
     statue->get_transformation().rotate_x_deg(-90);
     statue->get_transformation().scale(1.0f / 300, 1.0f / 300, 1.0f / 300);
     m_objects.push_back(statue);
     
     // load colums around the arch from Wavefront file
-    auto column1 = FileSceneObject::LoadFromObjFile("Column.obj", global_shader, Material::create_dark_grey_rock());
+    auto column1 = FileSceneObject::LoadFromObjFile("Column.obj", m_sceneShader, Material::create_dark_grey_rock());
     column1->get_transformation().translate(-0.8, 0., -1);
     column1->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
     m_objects.push_back(column1);
-    auto column2 = FileSceneObject::LoadFromObjFile("Column.obj", global_shader, Material::create_dark_grey_rock());
+    auto column2 = FileSceneObject::LoadFromObjFile("Column.obj", m_sceneShader, Material::create_dark_grey_rock());
     column2->get_transformation().translate(+0.8, 0., -1);
     column2->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
     m_objects.push_back(column2);
 
     // load entry arch from Wavefront file
-    auto arch = FileSceneObject::LoadFromObjFile("Arch.obj", global_shader, Material::create_yellow_rock());
+    auto arch = FileSceneObject::LoadFromObjFile("Arch.obj", m_sceneShader, Material::create_yellow_rock());
     arch->get_transformation().translate(0., 0., -1);
     arch->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
     m_objects.push_back(arch);
 
     // load entry arch from Wavefront file
-    auto arch2 = FileSceneObject::LoadFromObjFile("Arch.obj", global_shader, Material::create_yellow_rock());
+    auto arch2 = FileSceneObject::LoadFromObjFile("Arch.obj", m_sceneShader, Material::create_yellow_rock());
     arch2->get_transformation().translate(0., 0., -8);
     arch2->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
     m_objects.push_back(arch2);
 
     // load flashligth from Wavefront file
-    auto flashlight = FileSceneObject::LoadFromObjFile("Linterna.obj", global_shader, Material::create_white_plastic());
+    auto flashlight = FileSceneObject::LoadFromObjFile("Linterna.obj", m_sceneShader, Material::create_white_plastic());
     // hold the flashlight a bit lower than camera's eye and a bit to the front so it is within FOV
     flashlight->get_transformation().translate(0, -0.1, -0.2); // but if you hold too low, it goes out of the projection's FOV 
     flashlight->get_transformation().rotate_x_deg( -90 ); // fix model orientation
@@ -202,15 +200,15 @@ void Scene::setup()
 
 void Scene::draw()
 {
-    // create the shadow map if enabled
-    if (m_enable_shadow)
-    {
-        m_shadows.compute(m_objects);
-    }
+    // update viewport size
+    int width, height;
+    glfwGetWindowSize(m_window, &width, &height);
+    glViewport(0, 0, width, height);
 
     // render all scene objects
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     for (SceneObject* obj : m_objects)
     {
         // these calls will respect the polymorphism since we are using pointer

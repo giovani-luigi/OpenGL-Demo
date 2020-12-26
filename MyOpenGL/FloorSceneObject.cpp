@@ -28,8 +28,11 @@ FloorSceneObject::FloorSceneObject(Shader shader) :
     set_texture_coordinates(f_texts);
 }
 
-void FloorSceneObject::draw()
-{
+void FloorSceneObject::draw() {
+
+    if (m_camera == nullptr || m_lights == nullptr || m_projection == nullptr)
+        return; // object not configured yet, so we cannot draw...
+
     // draw center tile
 
     //  [ ][ ][ ]

@@ -9,7 +9,7 @@ public:
 
     explicit Texture();
 
-    explicit Texture(const std::string& filePath, bool flip_vertically = false);
+    explicit Texture(const std::string& filePath, bool flip_vertically = false, int unit = 0);
     void dispose();
 
     void use(int unit = 0) const;

@@ -146,6 +146,6 @@ vec3 spot_light(SpotLight light, Material material, vec3 cam_dir)
 
 void main () 
 {
-    vec3 cam_dir = normalize(u_camPos - frag_pos);
+    vec3 cam_dir = normalize(u_camPos - frag_pos);    
     frag_color = vec4(point_light(u_light, u_material, cam_dir) + spot_light(u_flashlight, u_material, cam_dir), 1.0);
 }

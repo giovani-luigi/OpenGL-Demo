@@ -13,7 +13,6 @@
 #include "CubeSceneObject.h"
 #include "FileSceneObject.h"
 #include "FloorSceneObject.h"
-#include "SceneShadows.h"
 
 class Scene
 {
@@ -26,14 +25,18 @@ public:
     void process_key(int keyCode, int scanCode, int action, int modifiers);
     void process_cursor(float xpos, float ypos);
     void process_mouse_button(int button, int action, int modifiers);
-    void process_viewport_resize(int width, int height);
+    void process_window_resize(int width, int height);
+
+    float PerspectiveZNear = 0.1f;
+    float PerspectiveZFar = 10.0f;
+
 private:
 
+    Shader m_sceneShader;
     GLFWwindow* m_window;
     std::vector<SceneObject*> m_objects; // it uses pointers due to polypmorphic behavior, which results in 'object slicing'
     Camera m_camera;
     SceneLights m_lights;
-    SceneShadows m_shadows;
     glm::mat4 m_projection;
     double m_lastFrameTime;
     double m_deltaTime = 0;
@@ -43,8 +46,7 @@ private:
     int m_frame;
     float m_mouse_sensitivity = 0.1f;
     float m_keyboard_speed = 2.5f;
-    bool m_enable_shadow;
-
+    
     glm::mat4 create_projection() const;
 
     void setup();

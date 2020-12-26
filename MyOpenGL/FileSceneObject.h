@@ -68,8 +68,6 @@ public:
 
                 }
                 index_offset += fv;
-                // per-face material
-                shape.mesh.material_ids[f];
             }
         }
 

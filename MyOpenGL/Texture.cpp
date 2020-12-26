@@ -7,7 +7,7 @@ Texture::Texture() : m_texture(0), m_width(0), m_height(0)
 {
 }
 
-Texture::Texture(const std::string& filePath, bool flip_vertically)
+Texture::Texture(const std::string& filePath, bool flip_vertically, int unit)
 {
     glGenTextures(1, &m_texture);
 
@@ -23,6 +23,7 @@ Texture::Texture(const std::string& filePath, bool flip_vertically)
         return;
     }
 
+    glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, m_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

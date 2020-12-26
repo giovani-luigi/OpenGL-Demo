@@ -154,7 +154,6 @@
     <ClCompile Include="MathUtils.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
-    <ClCompile Include="SceneShadows.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="SkyBoxSceneObject.cpp" />
@@ -456,7 +455,6 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneLights.h" />
     <ClInclude Include="SceneObject.h" />
-    <ClInclude Include="SceneShadows.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="CubeSceneObject.h" />
     <ClInclude Include="QuadSurfaceSceneObject.h" />
@@ -674,16 +672,6 @@
       <FileType>Document</FileType>
       <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)Models\</DestinationFolders>
       <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)Models\</DestinationFolders>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="Shaders\shadow.fragment.shader">
-      <FileType>Document</FileType>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)Shaders\</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)Shaders\</DestinationFolders>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="Shaders\shadow.vertex.shader">
-      <FileType>Document</FileType>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)Shaders\</DestinationFolders>
-      <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)Shaders\</DestinationFolders>
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
