@@ -23,7 +23,7 @@ FloorSceneObject::FloorSceneObject(Shader shader) :
     
     m_material = Material::create_texture("Images\\Floor.jpg", Material::create_default());
     auto f_texts = std::vector<float>{
-        QuadSurfaceSceneObject::generate_texture_coordinates()
+        QuadSurfaceSceneObject::generate_texture_coordinates(5.0f)
     };
     set_texture_coordinates(f_texts);
 }

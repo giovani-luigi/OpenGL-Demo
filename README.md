@@ -1,6 +1,8 @@
 # OpenGL-Demo
 A simple C++ OpenGL 3D demo of a First Person camera, moving in a scene, using a skybox with night texture, and some objects.
 
+## Screenshot
+![screen shot 1](https://raw.githubusercontent.com/giovani-luigi/OpenGL-Demo/master/screenshot.png)
 
 ## Scene
 A dark night, surrounded by mountains in the far plane, using the moon as main light source.
@@ -13,7 +15,7 @@ The camera is controlled in first person, and a flashlight can be toggled on/off
   - Thanks to Syoyo Fujita for his amazing "tiny_obj_loader.h" single-file OBJ parser
 - Loading texture files from 2D images
   - Thanks to Sean Barrett (and collaborators) for his amazing "stb_image.h" single-file image decoder.
-- "Infinite" floor Quad, so you can walk forever
+- "Infinite" floor Quad, so you can walk forever, and with a texture
 - Skybox with night sky and with the moon 
 - Main light (point light) to mimic the moon's light (no decay over distance)
 - A flashlight held in first person, with ON/OFF switch (mouse click to toggle a spot light)
@@ -21,6 +23,6 @@ The camera is controlled in first person, and a flashlight can be toggled on/off
 ## TODO
 - Shadows support
 - Simple collision detection
-- Add texture to the floor
 
-This is a work in progress... as of Dec. 2020
+## Author
+Giovani Luigi Rubenich Brondani

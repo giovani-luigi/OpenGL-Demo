@@ -77,7 +77,7 @@ Material Material::create_dark_grey_rock()
     return Material(
         glm::vec3(0.1f, 0.1f, 0.1f),
         glm::vec3(0.2f, 0.2f, 0.2f),
-        glm::vec3(0.1f, 0.1f, 0.1f),
+        glm::vec3(0.2f, 0.2f, 0.2f),
         0
     );
 }
@@ -85,9 +85,9 @@ Material Material::create_dark_grey_rock()
 Material Material::create_yellow_rock()
 {
     return Material(
-        glm::vec3(0.12f, 0.11f, 0.1f),
-        glm::vec3(0.6f, 0.56f, 0.42f),
-        glm::vec3(0.2f, 0.2f, 0.15f),
+        glm::vec3(0.12f, 0.11f, 0.10f),
+        glm::vec3(0.60f, 0.56f, 0.42f),
+        glm::vec3(0.38f, 0.35f, 0.33f),
         4
     );
 }

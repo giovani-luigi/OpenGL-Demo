@@ -5,18 +5,18 @@ class QuadSurfaceSceneObject : public SceneObject
 {
 public:
 
-    static std::vector<float> generate_texture_coordinates()
+    static std::vector<float> generate_texture_coordinates(float scale)
     {
         // create two triangles based on the corners
         return std::vector<float>{
             // first, upper right triangle
-            0.0f, 1.0f,
-            1.0f, 1.0f,
-            1.0f, 0.0f,
+            0.0f, 1.0f * scale,
+            1.0f * scale, 1.0f * scale,
+            1.0f * scale, 0.0f,
             // second, bottom left triangle
-            1.0f, 0.0f,
+            1.0f * scale, 0.0f,
             0.0f, 0.0f,
-            0.0f, 1.0f,
+            0.0f, 1.0f* scale,
         };
     }
     

@@ -19,6 +19,7 @@ public:
     };
 
     SceneObject(const std::vector<float>& vertices, const std::vector<float>& normals, SceneObjectType type, Shader shader, Material material);
+    SceneObject(const SceneObject& object); // copy constructor
     virtual ~SceneObject() = default;
 
     virtual void configure(const Camera& camera, const glm::mat4& projection, const SceneLights& lights);
@@ -31,9 +32,10 @@ public:
     Shader& get_shader() { return m_shader; }
     const std::vector<float>& get_vertices() const { return m_vertices; }
     GLuint get_vao() const { return m_vao; }
+    float* get_vertices() { return &m_vertices[0]; }
+
 
     bool FollowsCamera;
-    bool DrawShadows;
 
 protected:
 

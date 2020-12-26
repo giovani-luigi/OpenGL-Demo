@@ -160,31 +160,55 @@ void Scene::setup()
     
     // load statue from Wavefront file
     auto statue = FileSceneObject::LoadFromObjFile("milo.obj", m_sceneShader, Material::create_default());
-    statue->get_transformation().translate(0., 0., -2);
+    statue->get_transformation().translate(0., 0., -3);
     statue->get_transformation().rotate_x_deg(-90);
     statue->get_transformation().scale(1.0f / 300, 1.0f / 300, 1.0f / 300);
     m_objects.push_back(statue);
     
     // load colums around the arch from Wavefront file
     auto column1 = FileSceneObject::LoadFromObjFile("Column.obj", m_sceneShader, Material::create_dark_grey_rock());
+    auto column2 = new FileSceneObject(*column1); // creates a copy
+    auto column3 = new FileSceneObject(*column1); // creates a copy
+    auto column4 = new FileSceneObject(*column1); // creates a copy
     column1->get_transformation().translate(-0.8, 0., -1);
     column1->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
-    m_objects.push_back(column1);
-    auto column2 = FileSceneObject::LoadFromObjFile("Column.obj", m_sceneShader, Material::create_dark_grey_rock());
     column2->get_transformation().translate(+0.8, 0., -1);
     column2->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    column3->get_transformation().translate(-0.8, 0., -4.0f);
+    column3->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    column4->get_transformation().translate(+0.8, 0., -4.0f);
+    column4->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    m_objects.push_back(column1);
     m_objects.push_back(column2);
+    m_objects.push_back(column3);
+    m_objects.push_back(column4);
 
-    // load entry arch from Wavefront file
-    auto arch = FileSceneObject::LoadFromObjFile("Arch.obj", m_sceneShader, Material::create_yellow_rock());
-    arch->get_transformation().translate(0., 0., -1);
-    arch->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
-    m_objects.push_back(arch);
+    // load colums from Wavefront file
+    auto columnAlt1 = FileSceneObject::LoadFromObjFile("Column2.obj", m_sceneShader, Material::create_yellow_rock());
+    auto columnAlt2 = new FileSceneObject(*columnAlt1); // creates a copy
+    auto columnAlt3 = new FileSceneObject(*columnAlt1); // creates a copy
+    auto columnAlt4 = new FileSceneObject(*columnAlt1); // creates a copy
+    columnAlt1->get_transformation().translate(-0.8, 0., -2.0f);
+    columnAlt1->get_transformation().scale(1.0f / 5.5, 1.0f / 5.5, 1.0f / 5.5);
+    columnAlt2->get_transformation().translate(+0.8, 0., -2.0f);
+    columnAlt2->get_transformation().scale(1.0f / 5.5, 1.0f / 5.5, 1.0f / 5.5);
+    columnAlt3->get_transformation().translate(-0.8, 0., -3.0f);
+    columnAlt3->get_transformation().scale(1.0f / 5.5, 1.0f / 5.5, 1.0f / 5.5);
+    columnAlt4->get_transformation().translate(+0.8, 0., -3.0f);
+    columnAlt4->get_transformation().scale(1.0f / 5.5, 1.0f / 5.5, 1.0f / 5.5);
+    m_objects.push_back(columnAlt1);
+    m_objects.push_back(columnAlt2);
+    m_objects.push_back(columnAlt3);
+    m_objects.push_back(columnAlt4);
 
-    // load entry arch from Wavefront file
-    auto arch2 = FileSceneObject::LoadFromObjFile("Arch.obj", m_sceneShader, Material::create_yellow_rock());
-    arch2->get_transformation().translate(0., 0., -8);
+    // load front and back arch from Wavefront file
+    auto arch1 = FileSceneObject::LoadFromObjFile("Arch.obj", m_sceneShader, Material::create_yellow_rock());
+    auto arch2 = new FileSceneObject(*arch1); // copy ctor
+    arch1->get_transformation().translate(0., 0., -1.0f);
+    arch1->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    arch2->get_transformation().translate(0., 0., -4.0f);
     arch2->get_transformation().scale(1.0f / 3.5, 1.0f / 3.5, 1.0f / 3.5);
+    m_objects.push_back(arch1);
     m_objects.push_back(arch2);
 
     // load flashligth from Wavefront file

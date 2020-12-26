@@ -36,6 +36,22 @@ SceneObject::SceneObject(
 
 }
 
+SceneObject::SceneObject(const SceneObject& object) :
+    FollowsCamera(object.FollowsCamera),
+    m_transformation(object.m_transformation),
+    m_material(object.m_material),
+    m_shader(object.m_shader),
+    m_vao(object.m_vao),
+    m_vbo(object.m_vbo),
+    m_nvbo(object.m_nvbo),
+    m_tvbo(object.m_tvbo),
+    m_vertices(object.m_vertices),
+    m_normals(object.m_normals),
+    m_texcoordinates(object.m_texcoordinates)
+
+{
+}
+
 void SceneObject::configure(const Camera& camera, const glm::mat4& projection, const SceneLights& lights)
 {
     // use specified shader for this object
